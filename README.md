@@ -118,7 +118,7 @@ Rather than using generic `(Entity)-[RELATION]->(Entity)` patterns, PaperMind us
 
 ## Design Decisions
 
-1. **Structured LLM Extraction (Gemini Flash)**: By prompting Gemini Flash to extract JSON entities and relationships, we eliminate local PyTorch/REBEL dependency management. This decreases memory utilization, speeds up development, and results in more accurate nodes and edges.
+1. **Structured LLM Extraction (Groq)**: By prompting high-performance LLMs (like Qwen or Llama) via Groq to extract JSON entities and relationships, we eliminate local PyTorch/REBEL dependency management. This decreases memory utilization, speeds up development, and results in more accurate nodes and edges.
 2. **Low-Latency Agent Execution (Groq)**: The core multi-hop routing loop is powered by Groq's low-latency APIs (e.g. Llama-3-70b), which makes the conversational UI fast and responsive.
 3. **Hybrid retrieval**: Combines dense vector database lookup (FAISS) with structured knowledge network traversal (Neo4j) to yield high-context, facts-grounded query answers.
 4. **LangSmith Integration**: Built-in tracing monitors intermediate cypher query generation and LLM context prompts to optimize system latency and accuracy.
@@ -230,9 +230,89 @@ uv run python -m pytest
 
 ---
 
+## Phase 2 — Knowledge Extraction
+
+### Purpose
+The Knowledge Extraction Pipeline processes paper metadata and abstracts from `papers.json` using a two-layer hybrid graph construction paradigm. It resolves deterministic relationships automatically and queries the Groq API for scientific entity relationships, generating unified datasets ready for Neo4j.
+
+### Two-Layer Architecture
+
+1. **Layer 1: Deterministic Graph Construction**
+   - Constructed directly from metadata in `papers.json`.
+   - Generates `Paper`, `Author`, and `Category` entities automatically.
+   - Automatically maps `(Author)-[:WRITES]->(Paper)` and `(Paper)-[:BELONGS_TO]->(Category)` relationships.
+   - No LLM execution or API tokens are used for this layer.
+
+2. **Layer 2: Groq Knowledge Extraction**
+   - Uses `qwen/qwen3-32b` (with fallback to `llama-3.3-70b-versatile`) with structured JSON schema constraints.
+   - Extracts key entities matching allowed types: `Method`, `Concept`, `Dataset`, `Metric`, `Task`, `Organization`.
+   - Extracts semantic relationships matching allowed types: `USES`, `BASED_ON`, `EXTENDS`, `INTRODUCES`, `EVALUATED_ON`, `DEVELOPED_BY`, `SOLVES`, `OUTPERFORMS`, `COMPARED_WITH`.
+   - Automatically generates a paper-centric relationship: `(Paper)-[:MENTIONS]->(Entity)` for all extracted entities.
+   - Conditionally generates a paper-centric relationship: `(Paper)-[:INTRODUCES]->(Method)` only when the method name matches the paper's title or acronym to avoid false positives.
+
+### Taxonomy and Schemas
+
+#### Allowed Entity Types
+- `Paper` (deterministic)
+- `Author` (deterministic)
+- `Category` (deterministic)
+- `Method`
+- `Concept`
+- `Dataset`
+- `Metric`
+- `Task`
+- `Organization`
+
+#### Allowed Relationship Types
+- `WRITES` (deterministic)
+- `BELONGS_TO` (deterministic)
+- `MENTIONS` (paper-centric entity extraction)
+- `INTRODUCES` (conditional paper-centric method extraction)
+- `USES`
+- `BASED_ON`
+- `EXTENDS`
+- `EVALUATED_ON`
+- `DEVELOPED_BY`
+- `SOLVES`
+- `OUTPERFORMS`
+- `COMPARED_WITH`
+
+---
+
+### Running Extraction
+To run the knowledge extraction:
+1. Ensure your `GROQ_API_KEY` is set in the `.env` file.
+2. Execute the extraction script:
+   ```bash
+   uv run python -m src.extract_knowledge
+   ```
+
+### Output Formats
+
+All outputs are saved to the `data/processed/` directory:
+1. **`entities.json`**: Unified deduplicated entity cache. Merged on normalized name and entity type, retaining the longest description and union of source papers.
+2. **`relationships.json`**: Unified deduplicated relationship list connecting entities via their primary key `entity_id`.
+3. **`graph_data.json`**: Global payload containing extraction run metadata statistics and the consolidated graph elements.
+4. **`failed_extractions.json`**: Log of errors and paper IDs for failed API calls, enabling easy diagnostic reviews.
+
+---
+
 ## Usage Instructions
 
-*(To be populated in future stages)*
+To run the complete unit test suite:
+```bash
+uv run python -m pytest
+```
+
+To run the paper ingestion pipeline (Phase 1):
+```bash
+uv run python -m src.fetch_papers
+```
+
+To run the knowledge extraction pipeline (Phase 2):
+```bash
+uv run python -m src.extract_knowledge
+```
 
 ---
 

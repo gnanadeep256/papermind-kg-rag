@@ -28,11 +28,18 @@ llm:
   reasoning_provider: groq
   reasoning_model: llama-3
 
-  extraction_provider: gemini
-  extraction_model: gemini-flash
+  extraction_provider: groq
+  extraction_model: qwen/qwen3-32b
 
   temperature: 0.0
 
 api:
   host: 0.0.0.0
   port: 8000
+
+extraction:
+  max_papers: 10
+  pause_seconds: 3.0
+  request_delay_seconds: 1.0
+
+
