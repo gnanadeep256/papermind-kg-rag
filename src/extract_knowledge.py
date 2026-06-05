@@ -70,6 +70,15 @@ def is_introduced_method(method_name: str, title: str) -> bool:
         True if the method is likely proposed by the paper, False otherwise.
     """
     norm_method = normalize_name(method_name)
+    
+    # Never allow generic methods/concepts to be auto-introduced
+    generic_blacklist = {
+        "llm", "large language model", "large language models",
+        "transformer", "bert", "gpt", "lora", "rag"
+    }
+    if norm_method in generic_blacklist:
+        return False
+        
     norm_title = normalize_name(title)
     
     # 1. Stricter token match: check if method name exists as a complete word/token in the title
