@@ -1,0 +1,38 @@
+project:
+  name: papermind-kg-rag
+  version: 0.1.0
+  last_updated: auto
+
+data:
+  raw_dir: data/raw
+  processed_dir: data/processed
+  vectorstore_dir: data/vectorstore
+
+arxiv:
+  categories:
+    - cs.AI
+    - cs.CL
+  max_results: 100
+  download_pdfs: false
+
+embeddings:
+  model_name: all-MiniLM-L6-v2
+  chunk_size: 500
+  chunk_overlap: 50
+
+neo4j:
+  uri: bolt://localhost:7687
+  database: neo4j
+
+llm:
+  reasoning_provider: groq
+  reasoning_model: llama-3
+
+  extraction_provider: gemini
+  extraction_model: gemini-flash
+
+  temperature: 0.0
+
+api:
+  host: 0.0.0.0
+  port: 8000
