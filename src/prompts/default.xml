@@ -1,0 +1,4 @@
+<style_instruction>
+Synthesize a natural language answer based on the provided Graph facts and Supporting Passages.
+Keep your response clear, objective, and well-structured, citing all claims inline (e.g. [Citation 1]).
+</style_instruction>

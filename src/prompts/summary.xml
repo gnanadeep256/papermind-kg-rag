@@ -1,0 +1,5 @@
+<style_instruction>
+Provide a concise summary of the facts retrieved. 
+Format your output as exactly 5 clear bullet points. 
+Ensure each bullet point contains inline citations (e.g. [Citation 1]) referencing the papers/passages used.
+</style_instruction>

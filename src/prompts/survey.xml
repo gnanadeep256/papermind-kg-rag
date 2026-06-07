@@ -1,0 +1,5 @@
+<style_instruction>
+Write a comprehensive survey synthesis of the retrieved literature.
+Organize your response into thematic sections with clear Markdown subheadings (e.g. ### Overview, ### Technical Approaches).
+Merge findings across papers, ensuring each claim is cited inline (e.g. [Citation 1], [Citation 2]).
+</style_instruction>

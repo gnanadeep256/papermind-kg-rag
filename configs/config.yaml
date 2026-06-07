@@ -42,4 +42,72 @@ extraction:
   pause_seconds: 3.0
   request_delay_seconds: 1.0
 
+retrieval:
+  enable_cross_encoder: false
+  cross_encoder_model: BAAI/bge-reranker-base
+  semantic_weight: 0.80
+  graph_weight: 0.20
+  top_k_entity_matches: 5
+  relative_threshold: 0.90
+  min_words_evidence_budget: 1200
+  policies:
+    dataset:
+      ranking:
+        semantic: 0.70
+        graph_overlap: 0.30
+      thresholds:
+        semantic: 0.68
+        overlap: 0.10
+      budgeting:
+        min_words: 1200
+    method:
+      ranking:
+        semantic: 0.70
+        graph_overlap: 0.30
+      thresholds:
+        semantic: 0.70
+        overlap: 0.00
+      budgeting:
+        min_words: 1200
+    paper:
+      ranking:
+        semantic: 0.70
+        graph_overlap: 0.30
+      thresholds:
+        semantic: 0.65
+        overlap: 0.00
+      budgeting:
+        min_words: 1200
+    research:
+      ranking:
+        semantic: 0.70
+        graph_overlap: 0.30
+      thresholds:
+        semantic: 0.60
+        overlap: 0.00
+      budgeting:
+        min_words: 1200
+  token_budget:
+    paper: 6000
+    method: 5000
+    dataset: 4000
+    research: 6000
+  citation_alignment:
+    warning_threshold: 0.65
+    reject_threshold: 0.50
+  replace_invalid_citations: true
+
+generation:
+  debug_mode: true
+  semantic_drift_threshold: 0.55
+  weights:
+    semantic: 0.45
+    graph: 0.20
+    citation_coverage: 0.10
+    citation_precision: 0.10
+    rerank: 0.15
+
+
+
+
 
