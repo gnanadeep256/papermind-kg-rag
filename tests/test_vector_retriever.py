@@ -6,10 +6,14 @@ from src.vector_retriever import VectorRetriever
 def test_vector_retriever_lifecycle() -> None:
     """Verify VectorRetriever resources are loaded correctly."""
     with patch("src.vector_retriever.SentenceTransformer") as mock_model, \
+         patch("src.evaluation.embedding_cache.CachedEmbeddingModel") as mock_cached_model, \
          patch("src.vector_retriever.faiss.read_index") as mock_read_index, \
+         patch("src.vector_retriever.load_config") as mock_load_config, \
          patch("builtins.open", MagicMock()), \
          patch("json.load") as mock_json_load, \
          patch("os.path.exists") as mock_exists:
+         
+        mock_load_config.return_value = {"embeddings": {"model_name": "BAAI/bge-small-en-v1.5"}}
          
         mock_exists.return_value = True
         mock_json_load.return_value = [
@@ -27,10 +31,14 @@ def test_vector_retriever_lifecycle() -> None:
 def test_vector_retriever_search() -> None:
     """Verify retriever search query embeds input and maps top-k indices to metadata correctly."""
     with patch("src.vector_retriever.SentenceTransformer") as mock_model_class, \
+         patch("src.evaluation.embedding_cache.CachedEmbeddingModel") as mock_cached_model, \
          patch("src.vector_retriever.faiss.read_index") as mock_read_index, \
+         patch("src.vector_retriever.load_config") as mock_load_config, \
          patch("builtins.open", MagicMock()), \
          patch("json.load") as mock_json_load, \
          patch("os.path.exists") as mock_exists:
+         
+        mock_load_config.return_value = {"embeddings": {"model_name": "BAAI/bge-small-en-v1.5"}}
          
         mock_exists.return_value = True
         mock_json_load.return_value = [
@@ -40,8 +48,9 @@ def test_vector_retriever_search() -> None:
         
         mock_model = MagicMock()
         mock_model_class.return_value = mock_model
-        # Return mock normalized query vector
-        mock_model.encode.return_value = [np.zeros(384, dtype=np.float32)]
+        
+        # Configure the mock CachedEmbeddingModel to return query vector
+        mock_cached_model.return_value.encode.return_value = [np.zeros(384, dtype=np.float32)]
         
         mock_index = MagicMock()
         mock_read_index.return_value = mock_index
@@ -67,7 +76,7 @@ def test_vector_retriever_search() -> None:
         assert results[1]["page_end"] == 3
         assert results[1]["chunk_word_count"] == 1
         
-        mock_model.encode.assert_called_once_with(
+        mock_cached_model.return_value.encode.assert_called_once_with(
             ["Represent this sentence for searching relevant passages: test query"],
             normalize_embeddings=True
         )

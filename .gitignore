@@ -59,3 +59,14 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# SQLite database files and caches
+*.sqlite
+*.db
+
+# Generated reports & experiment runs
+reports/
+data/evaluation/embedding_cache.sqlite
+
+# Scratch files
+scratch_prefix.py

@@ -12,6 +12,26 @@ POLICY_REGISTRY: Dict[str, Type[BaseEvidencePolicy]] = {
     "research": ResearchEvidencePolicy
 }
 
+POLICY_CATEGORY_MAP: Dict[str, str] = {
+    "summary": "paper",
+    "comparison": "method",
+    "workflow": "method",
+    "future_work": "paper",
+    "limitations": "paper",
+    "experimental_results": "method",
+    "ood": "research",
+    "hallucination_trap": "research",
+    "multi_hop": "method",
+    "entity_linking": "method",
+    "citation_verification": "paper",
+    "dataset": "dataset",
+    "paper": "paper",
+    "method": "method",
+    "research": "research",
+    "default": "research"
+}
+
+
 class PolicyFactory:
     _registry: Dict[str, Type[BaseEvidencePolicy]] = dict(POLICY_REGISTRY)
 

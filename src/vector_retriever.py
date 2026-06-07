@@ -5,6 +5,7 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 from loguru import logger
 from typing import Dict, Any, List
+from src.utils.config import load_config
 
 class VectorRetriever:
     """
@@ -15,7 +16,12 @@ class VectorRetriever:
         self.index_path = os.path.join(vectorstore_dir, "faiss.index")
         self.metadata_path = os.path.join(vectorstore_dir, "chunk_metadata.json")
         
-        self.model_name = "BAAI/bge-small-en-v1.5"
+        try:
+            config = load_config()
+            self.model_name = config.get("embeddings", {}).get("model_name", "BAAI/bge-small-en-v1.5")
+        except Exception:
+            self.model_name = "BAAI/bge-small-en-v1.5"
+            
         self.model = None
         self.index = None
         self.metadata: List[Dict[str, Any]] = []
@@ -31,7 +37,9 @@ class VectorRetriever:
             
         # Load embedding model
         logger.info(f"Loading SentenceTransformer model: {self.model_name}...")
-        self.model = SentenceTransformer(self.model_name)
+        from src.evaluation.embedding_cache import CachedEmbeddingModel
+        base_model = SentenceTransformer(self.model_name)
+        self.model = CachedEmbeddingModel(base_model, model_name=self.model_name)
         
         # Load FAISS index
         logger.info(f"Loading FAISS index from {self.index_path}...")

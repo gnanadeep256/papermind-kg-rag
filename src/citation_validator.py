@@ -19,6 +19,7 @@ class CitationValidator:
         self.warnings = []
         self.citation_precision = 1.0
         self.generated_count = 0
+        self.semantic_alignment_scores = []
         
         if retriever is not None:
             is_hybrid_retriever = False
@@ -46,6 +47,7 @@ class CitationValidator:
         """
         self.warnings = []
         self.citation_precision = 1.0
+        self.semantic_alignment_scores = []
         
         # Count total generated citation tags
         generated_count = len(self.citation_pattern.findall(answer_text))
@@ -131,6 +133,7 @@ class CitationValidator:
                                     similarities.append(sim)
                                 
                                 similarity_score = max(similarities) if similarities else 0.0
+                                self.semantic_alignment_scores.append(similarity_score)
                                 
                                 # Threshold check
                                 if similarity_score < self.reject_threshold:

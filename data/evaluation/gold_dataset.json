@@ -1,0 +1,3902 @@
+[
+  {
+    "id": "gold_001",
+    "query": "What datasets evaluate Code2LoRA?",
+    "category": "dataset",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "RepoPeftBench"
+    ],
+    "must_contain": [
+      "RepoPeftBench",
+      "604 Python repositories"
+    ],
+    "must_not_contain": [
+      "Readability"
+    ],
+    "allow_abstain": false,
+    "variations": [
+      "What benchmark does Code2LoRA use?",
+      "Which datasets were used for Code2LoRA evaluation?",
+      "Evaluation benchmark of Code2LoRA?"
+    ]
+  },
+  {
+    "id": "gold_002",
+    "query": "How does TempoVLA differ from HANDOFF?",
+    "category": "comparison",
+    "expected_papers": [
+      "2606.06491",
+      "2606.06493"
+    ],
+    "expected_entities": [
+      "TempoVLA",
+      "HANDOFF"
+    ],
+    "must_contain": [
+      "TempoVLA",
+      "HANDOFF",
+      "speed-controllable",
+      "whole-body control"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "Compare TempoVLA with HANDOFF.",
+      "TempoVLA vs HANDOFF differences?",
+      "What are the main distinctions between TempoVLA and HANDOFF?"
+    ]
+  },
+  {
+    "id": "gold_003",
+    "query": "What is the recipe for baking a chocolate cake?",
+    "category": "ood",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [
+      "chocolate",
+      "cake",
+      "baking",
+      "flour"
+    ],
+    "allow_abstain": true,
+    "variations": [
+      "How to bake a chocolate cake?",
+      "Chocolate cake recipe instructions?",
+      "Give me a baking recipe for cake."
+    ]
+  },
+  {
+    "id": "gold_004",
+    "query": "Which datasets evaluate the PEFT method LoRADiffusion?",
+    "category": "hallucination_trap",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "LoRADiffusion benchmark datasets?",
+      "What benchmarks are used for LoRADiffusion?",
+      "LoRADiffusion evaluation papers?"
+    ]
+  },
+  {
+    "id": "gold_005",
+    "query": "Explain USAD 2.0 and its relation to USAD.",
+    "category": "comparison",
+    "expected_papers": [
+      "2606.06473"
+    ],
+    "expected_entities": [
+      "USAD 2.0",
+      "USAD"
+    ],
+    "must_contain": [
+      "USAD 2.0",
+      "USAD",
+      "EXTENDS"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "How is USAD 2.0 related to USAD?",
+      "Compare USAD 2.0 and USAD.",
+      "USAD 2.0 vs USAD relationship?"
+    ]
+  },
+  {
+    "id": "gold_006",
+    "query": "How to repair a flat tire on a bicycle?",
+    "category": "ood",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [
+      "tire",
+      "bicycle",
+      "tube",
+      "patch"
+    ],
+    "allow_abstain": true,
+    "variations": [
+      "Bicycle flat tire repair guide?",
+      "How to fix bike tire puncture?",
+      "Steps for bicycle tube replacement."
+    ]
+  },
+  {
+    "id": "gold_007",
+    "query": "Explain the model Architecture of USAD 3.0.",
+    "category": "hallucination_trap",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "USAD 3.0 model layers description?",
+      "What is USAD 3.0 network architecture?",
+      "USAD 3.0 parameters size?"
+    ]
+  },
+  {
+    "id": "gold_008",
+    "query": "Summarize the goals of the Torque Adaptation Module paper.",
+    "category": "summary",
+    "expected_papers": [
+      "2606.06218"
+    ],
+    "expected_entities": [
+      "TAM",
+      "Torque Adaptation Module"
+    ],
+    "must_contain": [
+      "TAM",
+      "Torque Adaptation Module",
+      "manipulation",
+      "motion transfer"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is Torque Adaptation Module paper about?",
+      "Explain the Torque Adaptation Module (TAM) method.",
+      "Summarize TAM contributions."
+    ]
+  },
+  {
+    "id": "gold_009",
+    "query": "What tasks does MLEvolve solve?",
+    "category": "workflow",
+    "expected_papers": [
+      "2606.06473"
+    ],
+    "expected_entities": [
+      "MLEvolve"
+    ],
+    "must_contain": [
+      "MLEvolve",
+      "Automated Machine Learning",
+      "algorithm discovery"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is the workflow of MLEvolve?",
+      "How does MLEvolve discover algorithms?",
+      "Explain the MLEvolve machine learning pipeline."
+    ]
+  },
+  {
+    "id": "gold_010",
+    "query": "Describe the future work proposed in the MLEvolve paper.",
+    "category": "future_work",
+    "expected_papers": [
+      "2606.06473"
+    ],
+    "expected_entities": [
+      "MLEvolve"
+    ],
+    "must_contain": [
+      "future",
+      "extension",
+      "scaling",
+      "evaluat"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "Future work of MLEvolve?",
+      "What extensions are planned for MLEvolve?",
+      "Proposed next steps in MLEvolve paper."
+    ]
+  },
+  {
+    "id": "gold_011",
+    "query": "What are the limitations of the HANDOFF control algorithm?",
+    "category": "limitations",
+    "expected_papers": [
+      "2606.06493"
+    ],
+    "expected_entities": [
+      "HANDOFF"
+    ],
+    "must_contain": [
+      "limitation",
+      "humanoid",
+      "distill",
+      " teacher"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "HANDOFF control model weaknesses?",
+      "What limits HANDOFF whole-body control?",
+      "Under what scenarios does HANDOFF struggle?"
+    ]
+  },
+  {
+    "id": "gold_012",
+    "query": "What are the experimental results of Code2LoRA on the evolution track?",
+    "category": "experimental_results",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA",
+      "RepoPeftBench"
+    ],
+    "must_contain": [
+      "evolution",
+      "track",
+      "RepoPeftBench",
+      "baseline",
+      "results"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "How did Code2LoRA perform on commit tasks?",
+      "Code2LoRA evolution track results?",
+      "Commit-derived evaluation score of Code2LoRA."
+    ]
+  },
+  {
+    "id": "gold_013",
+    "query": "Explain USAD and how it performs compared to other baselines.",
+    "category": "multi_hop",
+    "expected_papers": [
+      "2606.06473"
+    ],
+    "expected_entities": [
+      "USAD"
+    ],
+    "must_contain": [
+      "USAD",
+      "baseline",
+      "compared"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "How does USAD compare to similar algorithms?",
+      "USAD baseline evaluation comparisons.",
+      "USAD performance relative to existing methods."
+    ]
+  },
+  {
+    "id": "gold_014",
+    "query": "How is entity alignment performed in the citation verification step?",
+    "category": "citation_verification",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA"
+    ],
+    "must_contain": [
+      "citation",
+      "verif",
+      "align",
+      "match"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "Describe citation verification.",
+      "How are invalid citation tags verified?",
+      "Pipeline details for citation index alignment."
+    ]
+  },
+  {
+    "id": "gold_015",
+    "query": "Who is the primary author of the MLEvolve paper?",
+    "category": "paper",
+    "expected_papers": [
+      "2606.06473"
+    ],
+    "expected_entities": [
+      "Shangheng Du"
+    ],
+    "must_contain": [
+      "Shangheng Du",
+      "Du"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "Who wrote the MLEvolve paper?",
+      "List authors of MLEvolve framework.",
+      "MLEvolve publication author list."
+    ]
+  },
+  {
+    "id": "gold_016",
+    "query": "What are the core concepts associated with Torque Adaptation Module?",
+    "category": "entity_linking",
+    "expected_papers": [
+      "2606.06218"
+    ],
+    "expected_entities": [
+      "Torque Adaptation Module"
+    ],
+    "must_contain": [
+      "Torque Adaptation Module",
+      "manipulation",
+      "motion transfer"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "Explain the Torque Adaptation Module concepts.",
+      "What is TAM related to?",
+      "Core features of Torque Adaptation Module."
+    ]
+  },
+  {
+    "id": "gold_017",
+    "query": "Explain how Torque Adaptation Module extends Torque control.",
+    "category": "comparison",
+    "expected_papers": [
+      "2606.06218"
+    ],
+    "expected_entities": [
+      "Torque Adaptation Module"
+    ],
+    "must_contain": [
+      "Torque",
+      "control",
+      "extend",
+      "module"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "TAM vs baseline Torque control.",
+      "How does TAM improve on regular Torque control?",
+      "Torque control vs Torque Adaptation Module."
+    ]
+  },
+  {
+    "id": "gold_018",
+    "query": "What are the future extensions proposed in the TempoVLA vision-language action paper?",
+    "category": "future_work",
+    "expected_papers": [
+      "2606.06491"
+    ],
+    "expected_entities": [
+      "TempoVLA"
+    ],
+    "must_contain": [
+      "future",
+      "extension",
+      "robot",
+      "policy"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is the future direction of TempoVLA?",
+      "Proposed extensions in TempoVLA paper.",
+      "Where does TempoVLA future work point?"
+    ]
+  },
+  {
+    "id": "gold_019",
+    "query": "What are the limitations of the Torque Adaptation Module framework?",
+    "category": "limitations",
+    "expected_papers": [
+      "2606.06218"
+    ],
+    "expected_entities": [
+      "Torque Adaptation Module"
+    ],
+    "must_contain": [
+      "limitation",
+      "TAM",
+      "torque",
+      "adaptation"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What limits Torque Adaptation Module?",
+      "TAM weaknesses and constraints.",
+      "Torque Adaptation Module limitations."
+    ]
+  },
+  {
+    "id": "gold_020",
+    "query": "Describe the experimental results of HANDOFF humanoid teachers.",
+    "category": "experimental_results",
+    "expected_papers": [
+      "2606.06493"
+    ],
+    "expected_entities": [
+      "HANDOFF"
+    ],
+    "must_contain": [
+      "humanoid",
+      "teacher",
+      "distill",
+      "results",
+      "hands",
+      "off"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "HANDOFF model experimental validation.",
+      "How did HANDOFF score in test scenarios?",
+      "HANDOFF distilled complementary teachers results."
+    ]
+  },
+  {
+    "id": "synth_fallback_000",
+    "query": "Explain the details in the paper 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' section 'Abstract' for paper.",
+    "category": "paper",
+    "expected_papers": [
+      "2606.06493"
+    ],
+    "expected_entities": [
+      "HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers"
+    ],
+    "must_contain": [
+      "HANDOFF: H"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' under 'Abstract'?",
+      "Summarize the section 'Abstract' of 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers'."
+    ]
+  },
+  {
+    "id": "synth_fallback_001",
+    "query": "Explain the details in the paper 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' section 'Related Work' for method.",
+    "category": "method",
+    "expected_papers": [
+      "2606.06493"
+    ],
+    "expected_entities": [
+      "HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers"
+    ],
+    "must_contain": [
+      "HANDOFF: H"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' under 'Related Work'?",
+      "Summarize the section 'Related Work' of 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers'."
+    ]
+  },
+  {
+    "id": "synth_fallback_002",
+    "query": "Explain the details in the paper 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' section 'Related Work' for dataset.",
+    "category": "dataset",
+    "expected_papers": [
+      "2606.06493"
+    ],
+    "expected_entities": [
+      "HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers"
+    ],
+    "must_contain": [
+      "HANDOFF: H"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' under 'Related Work'?",
+      "Summarize the section 'Related Work' of 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers'."
+    ]
+  },
+  {
+    "id": "synth_fallback_003",
+    "query": "Explain the details in the paper 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' section 'Planner-Friendly Whole-Body Controller' for summary.",
+    "category": "summary",
+    "expected_papers": [
+      "2606.06493"
+    ],
+    "expected_entities": [
+      "HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers"
+    ],
+    "must_contain": [
+      "HANDOFF: H"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' under 'Planner-Friendly Whole-Body Controller'?",
+      "Summarize the section 'Planner-Friendly Whole-Body Controller' of 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers'."
+    ]
+  },
+  {
+    "id": "synth_fallback_004",
+    "query": "Explain the details in the paper 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' section 'Experiments' for comparison.",
+    "category": "comparison",
+    "expected_papers": [
+      "2606.06493"
+    ],
+    "expected_entities": [
+      "HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers"
+    ],
+    "must_contain": [
+      "HANDOFF: H"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' under 'Experiments'?",
+      "Summarize the section 'Experiments' of 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers'."
+    ]
+  },
+  {
+    "id": "synth_fallback_005",
+    "query": "Explain the details in the paper 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' section 'Experiments' for workflow.",
+    "category": "workflow",
+    "expected_papers": [
+      "2606.06493"
+    ],
+    "expected_entities": [
+      "HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers"
+    ],
+    "must_contain": [
+      "HANDOFF: H"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' under 'Experiments'?",
+      "Summarize the section 'Experiments' of 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers'."
+    ]
+  },
+  {
+    "id": "synth_fallback_006",
+    "query": "Explain the details in the paper 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' section 'References' for future_work.",
+    "category": "future_work",
+    "expected_papers": [
+      "2606.06493"
+    ],
+    "expected_entities": [
+      "HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers"
+    ],
+    "must_contain": [
+      "HANDOFF: H"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' under 'References'?",
+      "Summarize the section 'References' of 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers'."
+    ]
+  },
+  {
+    "id": "synth_fallback_007",
+    "query": "Explain the details in the paper 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' section 'References' for limitations.",
+    "category": "limitations",
+    "expected_papers": [
+      "2606.06493"
+    ],
+    "expected_entities": [
+      "HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers"
+    ],
+    "must_contain": [
+      "HANDOFF: H"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' under 'References'?",
+      "Summarize the section 'References' of 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers'."
+    ]
+  },
+  {
+    "id": "synth_fallback_008",
+    "query": "Explain the details in the paper 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' section 'References' for multi_hop.",
+    "category": "multi_hop",
+    "expected_papers": [
+      "2606.06493"
+    ],
+    "expected_entities": [
+      "HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers"
+    ],
+    "must_contain": [
+      "HANDOFF: H"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' under 'References'?",
+      "Summarize the section 'References' of 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers'."
+    ]
+  },
+  {
+    "id": "synth_fallback_009",
+    "query": "How do I cook a perfect steak?",
+    "category": "ood",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "Instructions for cooking steak?",
+      "Recipe for pan-seared steak."
+    ]
+  },
+  {
+    "id": "synth_fallback_010",
+    "query": "Explain the model architecture of HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers 4.0.",
+    "category": "hallucination_trap",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "What is HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers 4.0 framework?",
+      "USAD 4.0 parameters size?"
+    ]
+  },
+  {
+    "id": "synth_fallback_011",
+    "query": "Explain the details in the paper 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' section 'References' for experimental_results.",
+    "category": "experimental_results",
+    "expected_papers": [
+      "2606.06493"
+    ],
+    "expected_entities": [
+      "HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers"
+    ],
+    "must_contain": [
+      "HANDOFF: H"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' under 'References'?",
+      "Summarize the section 'References' of 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers'."
+    ]
+  },
+  {
+    "id": "synth_fallback_012",
+    "query": "Explain the details in the paper 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' section 'Implementation Details' for entity_linking.",
+    "category": "entity_linking",
+    "expected_papers": [
+      "2606.06493"
+    ],
+    "expected_entities": [
+      "HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers"
+    ],
+    "must_contain": [
+      "HANDOFF: H"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' under 'Implementation Details'?",
+      "Summarize the section 'Implementation Details' of 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers'."
+    ]
+  },
+  {
+    "id": "synth_fallback_013",
+    "query": "Explain the details in the paper 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' section 'Implementation Details' for citation_verification.",
+    "category": "citation_verification",
+    "expected_papers": [
+      "2606.06493"
+    ],
+    "expected_entities": [
+      "HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers"
+    ],
+    "must_contain": [
+      "HANDOFF: H"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' under 'Implementation Details'?",
+      "Summarize the section 'Implementation Details' of 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers'."
+    ]
+  },
+  {
+    "id": "synth_fallback_014",
+    "query": "Explain the details in the paper 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' section 'Extended Experimental Results' for paper.",
+    "category": "paper",
+    "expected_papers": [
+      "2606.06493"
+    ],
+    "expected_entities": [
+      "HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers"
+    ],
+    "must_contain": [
+      "HANDOFF: H"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers' under 'Extended Experimental Results'?",
+      "Summarize the section 'Extended Experimental Results' of 'HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers'."
+    ]
+  },
+  {
+    "id": "synth_fallback_015",
+    "query": "Explain the details in the paper 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' section 'Introduction' for method.",
+    "category": "method",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution"
+    ],
+    "must_contain": [
+      "Code2LoRA:"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' under 'Introduction'?",
+      "Summarize the section 'Introduction' of 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution'."
+    ]
+  },
+  {
+    "id": "synth_fallback_016",
+    "query": "Explain the details in the paper 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' section 'Introduction' for dataset.",
+    "category": "dataset",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution"
+    ],
+    "must_contain": [
+      "Code2LoRA:"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' under 'Introduction'?",
+      "Summarize the section 'Introduction' of 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution'."
+    ]
+  },
+  {
+    "id": "synth_fallback_017",
+    "query": "Explain the details in the paper 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' section 'Code2LoRA-Static' for summary.",
+    "category": "summary",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution"
+    ],
+    "must_contain": [
+      "Code2LoRA:"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' under 'Code2LoRA-Static'?",
+      "Summarize the section 'Code2LoRA-Static' of 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution'."
+    ]
+  },
+  {
+    "id": "synth_fallback_018",
+    "query": "Explain the details in the paper 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' section 'Training' for comparison.",
+    "category": "comparison",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution"
+    ],
+    "must_contain": [
+      "Code2LoRA:"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' under 'Training'?",
+      "Summarize the section 'Training' of 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution'."
+    ]
+  },
+  {
+    "id": "synth_fallback_019",
+    "query": "Explain the details in the paper 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' section 'Training' for workflow.",
+    "category": "workflow",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution"
+    ],
+    "must_contain": [
+      "Code2LoRA:"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' under 'Training'?",
+      "Summarize the section 'Training' of 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution'."
+    ]
+  },
+  {
+    "id": "synth_fallback_020",
+    "query": "Explain the details in the paper 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' section 'Evolution Track' for future_work.",
+    "category": "future_work",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution"
+    ],
+    "must_contain": [
+      "Code2LoRA:"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' under 'Evolution Track'?",
+      "Summarize the section 'Evolution Track' of 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution'."
+    ]
+  },
+  {
+    "id": "synth_fallback_021",
+    "query": "Explain the details in the paper 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' section 'Evolution Track' for limitations.",
+    "category": "limitations",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution"
+    ],
+    "must_contain": [
+      "Code2LoRA:"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' under 'Evolution Track'?",
+      "Summarize the section 'Evolution Track' of 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution'."
+    ]
+  },
+  {
+    "id": "synth_fallback_022",
+    "query": "Explain the details in the paper 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' section 'References' for multi_hop.",
+    "category": "multi_hop",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution"
+    ],
+    "must_contain": [
+      "Code2LoRA:"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' under 'References'?",
+      "Summarize the section 'References' of 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution'."
+    ]
+  },
+  {
+    "id": "synth_fallback_023",
+    "query": "How do I cook a perfect steak?",
+    "category": "ood",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "Instructions for cooking steak?",
+      "Recipe for pan-seared steak."
+    ]
+  },
+  {
+    "id": "synth_fallback_024",
+    "query": "Explain the model architecture of Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution 4.0.",
+    "category": "hallucination_trap",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "What is Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution 4.0 framework?",
+      "USAD 4.0 parameters size?"
+    ]
+  },
+  {
+    "id": "synth_fallback_025",
+    "query": "Explain the details in the paper 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' section 'References' for experimental_results.",
+    "category": "experimental_results",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution"
+    ],
+    "must_contain": [
+      "Code2LoRA:"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' under 'References'?",
+      "Summarize the section 'References' of 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution'."
+    ]
+  },
+  {
+    "id": "synth_fallback_026",
+    "query": "Explain the details in the paper 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' section 'References' for entity_linking.",
+    "category": "entity_linking",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution"
+    ],
+    "must_contain": [
+      "Code2LoRA:"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' under 'References'?",
+      "Summarize the section 'References' of 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution'."
+    ]
+  },
+  {
+    "id": "synth_fallback_027",
+    "query": "Explain the details in the paper 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' section 'Implementation Details' for citation_verification.",
+    "category": "citation_verification",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution"
+    ],
+    "must_contain": [
+      "Code2LoRA:"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' under 'Implementation Details'?",
+      "Summarize the section 'Implementation Details' of 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution'."
+    ]
+  },
+  {
+    "id": "synth_fallback_028",
+    "query": "Explain the details in the paper 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' section 'Adapted Inference' for paper.",
+    "category": "paper",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution"
+    ],
+    "must_contain": [
+      "Code2LoRA:"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' under 'Adapted Inference'?",
+      "Summarize the section 'Adapted Inference' of 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution'."
+    ]
+  },
+  {
+    "id": "synth_fallback_029",
+    "query": "Explain the details in the paper 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' section 'Repository GRU' for method.",
+    "category": "method",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution"
+    ],
+    "must_contain": [
+      "Code2LoRA:"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' under 'Repository GRU'?",
+      "Summarize the section 'Repository GRU' of 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution'."
+    ]
+  },
+  {
+    "id": "synth_fallback_030",
+    "query": "Explain the details in the paper 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' section 'Repository GRU' for dataset.",
+    "category": "dataset",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution"
+    ],
+    "must_contain": [
+      "Code2LoRA:"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' under 'Repository GRU'?",
+      "Summarize the section 'Repository GRU' of 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution'."
+    ]
+  },
+  {
+    "id": "synth_fallback_031",
+    "query": "Explain the details in the paper 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' section 'Code2LoRA Scaling with Repository Diversity' for summary.",
+    "category": "summary",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution"
+    ],
+    "must_contain": [
+      "Code2LoRA:"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' under 'Code2LoRA Scaling with Repository Diversity'?",
+      "Summarize the section 'Code2LoRA Scaling with Repository Diversity' of 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution'."
+    ]
+  },
+  {
+    "id": "synth_fallback_032",
+    "query": "Explain the details in the paper 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' section 'Code2LoRA Scaling with Repository Diversity' for comparison.",
+    "category": "comparison",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution"
+    ],
+    "must_contain": [
+      "Code2LoRA:"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' under 'Code2LoRA Scaling with Repository Diversity'?",
+      "Summarize the section 'Code2LoRA Scaling with Repository Diversity' of 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution'."
+    ]
+  },
+  {
+    "id": "synth_fallback_033",
+    "query": "Explain the details in the paper 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' section 'Code2LoRA Scaling with Repository Diversity' for workflow.",
+    "category": "workflow",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution"
+    ],
+    "must_contain": [
+      "Code2LoRA:"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' under 'Code2LoRA Scaling with Repository Diversity'?",
+      "Summarize the section 'Code2LoRA Scaling with Repository Diversity' of 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution'."
+    ]
+  },
+  {
+    "id": "synth_fallback_034",
+    "query": "Explain the details in the paper 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' section 'Code2LoRA Scaling with Repository Diversity' for future_work.",
+    "category": "future_work",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution"
+    ],
+    "must_contain": [
+      "Code2LoRA:"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' under 'Code2LoRA Scaling with Repository Diversity'?",
+      "Summarize the section 'Code2LoRA Scaling with Repository Diversity' of 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution'."
+    ]
+  },
+  {
+    "id": "synth_fallback_035",
+    "query": "Explain the details in the paper 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' section 'Code2LoRA Scaling with Repository Diversity' for limitations.",
+    "category": "limitations",
+    "expected_papers": [
+      "2606.06492"
+    ],
+    "expected_entities": [
+      "Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution"
+    ],
+    "must_contain": [
+      "Code2LoRA:"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution' under 'Code2LoRA Scaling with Repository Diversity'?",
+      "Summarize the section 'Code2LoRA Scaling with Repository Diversity' of 'Code2LoRA: Hypernetwork-Generated Adapters for Code Language Models under Software Evolution'."
+    ]
+  },
+  {
+    "id": "synth_fallback_036",
+    "query": "Explain the details in the paper 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' section 'Abstract' for multi_hop.",
+    "category": "multi_hop",
+    "expected_papers": [
+      "2606.06491"
+    ],
+    "expected_entities": [
+      "TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies"
+    ],
+    "must_contain": [
+      "TempoVLA: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' under 'Abstract'?",
+      "Summarize the section 'Abstract' of 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies'."
+    ]
+  },
+  {
+    "id": "synth_fallback_037",
+    "query": "How do I cook a perfect steak?",
+    "category": "ood",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "Instructions for cooking steak?",
+      "Recipe for pan-seared steak."
+    ]
+  },
+  {
+    "id": "synth_fallback_038",
+    "query": "Explain the model architecture of TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies 4.0.",
+    "category": "hallucination_trap",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "What is TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies 4.0 framework?",
+      "USAD 4.0 parameters size?"
+    ]
+  },
+  {
+    "id": "synth_fallback_039",
+    "query": "Explain the details in the paper 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' section 'Speed Conditioning in TempoVLA' for experimental_results.",
+    "category": "experimental_results",
+    "expected_papers": [
+      "2606.06491"
+    ],
+    "expected_entities": [
+      "TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies"
+    ],
+    "must_contain": [
+      "TempoVLA: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' under 'Speed Conditioning in TempoVLA'?",
+      "Summarize the section 'Speed Conditioning in TempoVLA' of 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies'."
+    ]
+  },
+  {
+    "id": "synth_fallback_040",
+    "query": "Explain the details in the paper 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' section 'Feasibility of Variable-Speed Trajectory Augmentation' for entity_linking.",
+    "category": "entity_linking",
+    "expected_papers": [
+      "2606.06491"
+    ],
+    "expected_entities": [
+      "TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies"
+    ],
+    "must_contain": [
+      "TempoVLA: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' under 'Feasibility of Variable-Speed Trajectory Augmentation'?",
+      "Summarize the section 'Feasibility of Variable-Speed Trajectory Augmentation' of 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies'."
+    ]
+  },
+  {
+    "id": "synth_fallback_041",
+    "query": "Explain the details in the paper 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' section 'Effect of the Training Speed Range' for citation_verification.",
+    "category": "citation_verification",
+    "expected_papers": [
+      "2606.06491"
+    ],
+    "expected_entities": [
+      "TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies"
+    ],
+    "must_contain": [
+      "TempoVLA: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' under 'Effect of the Training Speed Range'?",
+      "Summarize the section 'Effect of the Training Speed Range' of 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies'."
+    ]
+  },
+  {
+    "id": "synth_fallback_042",
+    "query": "Explain the details in the paper 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' section 'Results' for paper.",
+    "category": "paper",
+    "expected_papers": [
+      "2606.06491"
+    ],
+    "expected_entities": [
+      "TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies"
+    ],
+    "must_contain": [
+      "TempoVLA: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' under 'Results'?",
+      "Summarize the section 'Results' of 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies'."
+    ]
+  },
+  {
+    "id": "synth_fallback_043",
+    "query": "Explain the details in the paper 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' section 'References' for method.",
+    "category": "method",
+    "expected_papers": [
+      "2606.06491"
+    ],
+    "expected_entities": [
+      "TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies"
+    ],
+    "must_contain": [
+      "TempoVLA: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' under 'References'?",
+      "Summarize the section 'References' of 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies'."
+    ]
+  },
+  {
+    "id": "synth_fallback_044",
+    "query": "Explain the details in the paper 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' section 'References' for dataset.",
+    "category": "dataset",
+    "expected_papers": [
+      "2606.06491"
+    ],
+    "expected_entities": [
+      "TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies"
+    ],
+    "must_contain": [
+      "TempoVLA: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' under 'References'?",
+      "Summarize the section 'References' of 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies'."
+    ]
+  },
+  {
+    "id": "synth_fallback_045",
+    "query": "Explain the details in the paper 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' section 'References' for summary.",
+    "category": "summary",
+    "expected_papers": [
+      "2606.06491"
+    ],
+    "expected_entities": [
+      "TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies"
+    ],
+    "must_contain": [
+      "TempoVLA: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' under 'References'?",
+      "Summarize the section 'References' of 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies'."
+    ]
+  },
+  {
+    "id": "synth_fallback_046",
+    "query": "Explain the details in the paper 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' section 'References' for comparison.",
+    "category": "comparison",
+    "expected_papers": [
+      "2606.06491"
+    ],
+    "expected_entities": [
+      "TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies"
+    ],
+    "must_contain": [
+      "TempoVLA: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' under 'References'?",
+      "Summarize the section 'References' of 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies'."
+    ]
+  },
+  {
+    "id": "synth_fallback_047",
+    "query": "Explain the details in the paper 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' section 'Stress Test at Extreme Speeds' for workflow.",
+    "category": "workflow",
+    "expected_papers": [
+      "2606.06491"
+    ],
+    "expected_entities": [
+      "TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies"
+    ],
+    "must_contain": [
+      "TempoVLA: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' under 'Stress Test at Extreme Speeds'?",
+      "Summarize the section 'Stress Test at Extreme Speeds' of 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies'."
+    ]
+  },
+  {
+    "id": "synth_fallback_048",
+    "query": "Explain the details in the paper 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' section 'Stress Test at Extreme Speeds' for future_work.",
+    "category": "future_work",
+    "expected_papers": [
+      "2606.06491"
+    ],
+    "expected_entities": [
+      "TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies"
+    ],
+    "must_contain": [
+      "TempoVLA: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' under 'Stress Test at Extreme Speeds'?",
+      "Summarize the section 'Stress Test at Extreme Speeds' of 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies'."
+    ]
+  },
+  {
+    "id": "synth_fallback_049",
+    "query": "Explain the details in the paper 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' section 'Stress Test at Extreme Speeds' for limitations.",
+    "category": "limitations",
+    "expected_papers": [
+      "2606.06491"
+    ],
+    "expected_entities": [
+      "TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies"
+    ],
+    "must_contain": [
+      "TempoVLA: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' under 'Stress Test at Extreme Speeds'?",
+      "Summarize the section 'Stress Test at Extreme Speeds' of 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies'."
+    ]
+  },
+  {
+    "id": "synth_fallback_050",
+    "query": "Explain the details in the paper 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' section 'Stress Test at Extreme Speeds' for multi_hop.",
+    "category": "multi_hop",
+    "expected_papers": [
+      "2606.06491"
+    ],
+    "expected_entities": [
+      "TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies"
+    ],
+    "must_contain": [
+      "TempoVLA: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies' under 'Stress Test at Extreme Speeds'?",
+      "Summarize the section 'Stress Test at Extreme Speeds' of 'TempoVLA: Learning Speed-Controllable Vision-Language-Action Policies'."
+    ]
+  },
+  {
+    "id": "synth_fallback_051",
+    "query": "How do I cook a perfect steak?",
+    "category": "ood",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "Instructions for cooking steak?",
+      "Recipe for pan-seared steak."
+    ]
+  },
+  {
+    "id": "synth_fallback_052",
+    "query": "Explain the model architecture of Regret Minimization with Adaptive Opponents in Repeated Games 4.0.",
+    "category": "hallucination_trap",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "What is Regret Minimization with Adaptive Opponents in Repeated Games 4.0 framework?",
+      "USAD 4.0 parameters size?"
+    ]
+  },
+  {
+    "id": "synth_fallback_053",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Introduction' for experimental_results.",
+    "category": "experimental_results",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Introduction'?",
+      "Summarize the section 'Introduction' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_054",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Introduction' for entity_linking.",
+    "category": "entity_linking",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Introduction'?",
+      "Summarize the section 'Introduction' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_055",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'RP-Regret Definition' for citation_verification.",
+    "category": "citation_verification",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'RP-Regret Definition'?",
+      "Summarize the section 'RP-Regret Definition' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_056",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'RP-Regret Definition' for paper.",
+    "category": "paper",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'RP-Regret Definition'?",
+      "Summarize the section 'RP-Regret Definition' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_057",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'RP-Regret Definition' for method.",
+    "category": "method",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'RP-Regret Definition'?",
+      "Summarize the section 'RP-Regret Definition' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_058",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Reformulating Repeated Games with Bounded Memory as Markov Games' for dataset.",
+    "category": "dataset",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Reformulating Repeated Games with Bounded Memory as Markov Games'?",
+      "Summarize the section 'Reformulating Repeated Games with Bounded Memory as Markov Games' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_059",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Convexifying Condition 3 and the Overall Algorithm' for summary.",
+    "category": "summary",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Convexifying Condition 3 and the Overall Algorithm'?",
+      "Summarize the section 'Convexifying Condition 3 and the Overall Algorithm' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_060",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Equilibria in Repeated Games' for comparison.",
+    "category": "comparison",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Equilibria in Repeated Games'?",
+      "Summarize the section 'Equilibria in Repeated Games' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_061",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Relationship between RP-Regret and Equilibria' for workflow.",
+    "category": "workflow",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Relationship between RP-Regret and Equilibria'?",
+      "Summarize the section 'Relationship between RP-Regret and Equilibria' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_062",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'References' for future_work.",
+    "category": "future_work",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'References'?",
+      "Summarize the section 'References' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_063",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'References' for limitations.",
+    "category": "limitations",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'References'?",
+      "Summarize the section 'References' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_064",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Introduction' for multi_hop.",
+    "category": "multi_hop",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Introduction'?",
+      "Summarize the section 'Introduction' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_065",
+    "query": "How do I cook a perfect steak?",
+    "category": "ood",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "Instructions for cooking steak?",
+      "Recipe for pan-seared steak."
+    ]
+  },
+  {
+    "id": "synth_fallback_066",
+    "query": "Explain the model architecture of Regret Minimization with Adaptive Opponents in Repeated Games 4.0.",
+    "category": "hallucination_trap",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "What is Regret Minimization with Adaptive Opponents in Repeated Games 4.0 framework?",
+      "USAD 4.0 parameters size?"
+    ]
+  },
+  {
+    "id": "synth_fallback_067",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Auxiliary Lemmas for the Induced Markov Game' for experimental_results.",
+    "category": "experimental_results",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Auxiliary Lemmas for the Induced Markov Game'?",
+      "Summarize the section 'Auxiliary Lemmas for the Induced Markov Game' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_068",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Full Statements of Hardness Results' for entity_linking.",
+    "category": "entity_linking",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Full Statements of Hardness Results'?",
+      "Summarize the section 'Full Statements of Hardness Results' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_069",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Full Statements of Hardness Results' for citation_verification.",
+    "category": "citation_verification",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Full Statements of Hardness Results'?",
+      "Summarize the section 'Full Statements of Hardness Results' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_070",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Full Statements of Hardness Results' for paper.",
+    "category": "paper",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Full Statements of Hardness Results'?",
+      "Summarize the section 'Full Statements of Hardness Results' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_071",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Full Statements of Hardness Results' for method.",
+    "category": "method",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Full Statements of Hardness Results'?",
+      "Summarize the section 'Full Statements of Hardness Results' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_072",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Full Statements of Hardness Results' for dataset.",
+    "category": "dataset",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Full Statements of Hardness Results'?",
+      "Summarize the section 'Full Statements of Hardness Results' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_073",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Full Statements of Hardness Results' for summary.",
+    "category": "summary",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Full Statements of Hardness Results'?",
+      "Summarize the section 'Full Statements of Hardness Results' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_074",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Full Statements of Hardness Results' for comparison.",
+    "category": "comparison",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Full Statements of Hardness Results'?",
+      "Summarize the section 'Full Statements of Hardness Results' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_075",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Full Statements of Hardness Results' for workflow.",
+    "category": "workflow",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Full Statements of Hardness Results'?",
+      "Summarize the section 'Full Statements of Hardness Results' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_076",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Full Statements of Hardness Results' for future_work.",
+    "category": "future_work",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Full Statements of Hardness Results'?",
+      "Summarize the section 'Full Statements of Hardness Results' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_077",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Full Statements of Hardness Results' for limitations.",
+    "category": "limitations",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Full Statements of Hardness Results'?",
+      "Summarize the section 'Full Statements of Hardness Results' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_078",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Full Statements of Hardness Results' for multi_hop.",
+    "category": "multi_hop",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Full Statements of Hardness Results'?",
+      "Summarize the section 'Full Statements of Hardness Results' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_079",
+    "query": "How do I cook a perfect steak?",
+    "category": "ood",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "Instructions for cooking steak?",
+      "Recipe for pan-seared steak."
+    ]
+  },
+  {
+    "id": "synth_fallback_080",
+    "query": "Explain the model architecture of Regret Minimization with Adaptive Opponents in Repeated Games 4.0.",
+    "category": "hallucination_trap",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "What is Regret Minimization with Adaptive Opponents in Repeated Games 4.0 framework?",
+      "USAD 4.0 parameters size?"
+    ]
+  },
+  {
+    "id": "synth_fallback_081",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Full Statements of Hardness Results' for experimental_results.",
+    "category": "experimental_results",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Full Statements of Hardness Results'?",
+      "Summarize the section 'Full Statements of Hardness Results' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_082",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Full Statements of Hardness Results' for entity_linking.",
+    "category": "entity_linking",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Full Statements of Hardness Results'?",
+      "Summarize the section 'Full Statements of Hardness Results' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_083",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Auxiliary Lemmas' for citation_verification.",
+    "category": "citation_verification",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Auxiliary Lemmas'?",
+      "Summarize the section 'Auxiliary Lemmas' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_084",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Auxiliary Lemmas' for paper.",
+    "category": "paper",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Auxiliary Lemmas'?",
+      "Summarize the section 'Auxiliary Lemmas' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_085",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Auxiliary Lemmas' for method.",
+    "category": "method",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Auxiliary Lemmas'?",
+      "Summarize the section 'Auxiliary Lemmas' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_086",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Auxiliary Lemmas' for dataset.",
+    "category": "dataset",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Auxiliary Lemmas'?",
+      "Summarize the section 'Auxiliary Lemmas' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_087",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Auxiliary Lemmas' for summary.",
+    "category": "summary",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Auxiliary Lemmas'?",
+      "Summarize the section 'Auxiliary Lemmas' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_088",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Auxiliary Lemmas for the Induced Markov Game' for comparison.",
+    "category": "comparison",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Auxiliary Lemmas for the Induced Markov Game'?",
+      "Summarize the section 'Auxiliary Lemmas for the Induced Markov Game' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_089",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Auxiliary Lemmas for the Induced Markov Game' for workflow.",
+    "category": "workflow",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Auxiliary Lemmas for the Induced Markov Game'?",
+      "Summarize the section 'Auxiliary Lemmas for the Induced Markov Game' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_090",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Auxiliary Lemmas for the Induced Markov Game' for future_work.",
+    "category": "future_work",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Auxiliary Lemmas for the Induced Markov Game'?",
+      "Summarize the section 'Auxiliary Lemmas for the Induced Markov Game' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_091",
+    "query": "Explain the details in the paper 'Regret Minimization with Adaptive Opponents in Repeated Games' section 'Auxiliary Lemmas for the Induced Markov Game' for limitations.",
+    "category": "limitations",
+    "expected_papers": [
+      "2606.06486"
+    ],
+    "expected_entities": [
+      "Regret Minimization with Adaptive Opponents in Repeated Games"
+    ],
+    "must_contain": [
+      "Regret Min"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Regret Minimization with Adaptive Opponents in Repeated Games' under 'Auxiliary Lemmas for the Induced Markov Game'?",
+      "Summarize the section 'Auxiliary Lemmas for the Induced Markov Game' of 'Regret Minimization with Adaptive Opponents in Repeated Games'."
+    ]
+  },
+  {
+    "id": "synth_fallback_092",
+    "query": "Explain the details in the paper 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' section 'Introduction' for multi_hop.",
+    "category": "multi_hop",
+    "expected_papers": [
+      "2606.06481"
+    ],
+    "expected_entities": [
+      "Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection"
+    ],
+    "must_contain": [
+      "Operation-"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' under 'Introduction'?",
+      "Summarize the section 'Introduction' of 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection'."
+    ]
+  },
+  {
+    "id": "synth_fallback_093",
+    "query": "How do I cook a perfect steak?",
+    "category": "ood",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "Instructions for cooking steak?",
+      "Recipe for pan-seared steak."
+    ]
+  },
+  {
+    "id": "synth_fallback_094",
+    "query": "Explain the model architecture of Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection 4.0.",
+    "category": "hallucination_trap",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "What is Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection 4.0 framework?",
+      "USAD 4.0 parameters size?"
+    ]
+  },
+  {
+    "id": "synth_fallback_095",
+    "query": "Explain the details in the paper 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' section 'Benchmark Construction' for experimental_results.",
+    "category": "experimental_results",
+    "expected_papers": [
+      "2606.06481"
+    ],
+    "expected_entities": [
+      "Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection"
+    ],
+    "must_contain": [
+      "Operation-"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' under 'Benchmark Construction'?",
+      "Summarize the section 'Benchmark Construction' of 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection'."
+    ]
+  },
+  {
+    "id": "synth_fallback_096",
+    "query": "Explain the details in the paper 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' section 'Tasks' for entity_linking.",
+    "category": "entity_linking",
+    "expected_papers": [
+      "2606.06481"
+    ],
+    "expected_entities": [
+      "Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection"
+    ],
+    "must_contain": [
+      "Operation-"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' under 'Tasks'?",
+      "Summarize the section 'Tasks' of 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection'."
+    ]
+  },
+  {
+    "id": "synth_fallback_097",
+    "query": "Explain the details in the paper 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' section 'Tasks' for citation_verification.",
+    "category": "citation_verification",
+    "expected_papers": [
+      "2606.06481"
+    ],
+    "expected_entities": [
+      "Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection"
+    ],
+    "must_contain": [
+      "Operation-"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' under 'Tasks'?",
+      "Summarize the section 'Tasks' of 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection'."
+    ]
+  },
+  {
+    "id": "synth_fallback_098",
+    "query": "Explain the details in the paper 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' section 'Evaluation Protocol' for paper.",
+    "category": "paper",
+    "expected_papers": [
+      "2606.06481"
+    ],
+    "expected_entities": [
+      "Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection"
+    ],
+    "must_contain": [
+      "Operation-"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' under 'Evaluation Protocol'?",
+      "Summarize the section 'Evaluation Protocol' of 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection'."
+    ]
+  },
+  {
+    "id": "synth_fallback_099",
+    "query": "Explain the details in the paper 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' section 'Controlled Analysis of Coverage, Operation, and Revision History' for method.",
+    "category": "method",
+    "expected_papers": [
+      "2606.06481"
+    ],
+    "expected_entities": [
+      "Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection"
+    ],
+    "must_contain": [
+      "Operation-"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' under 'Controlled Analysis of Coverage, Operation, and Revision History'?",
+      "Summarize the section 'Controlled Analysis of Coverage, Operation, and Revision History' of 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection'."
+    ]
+  },
+  {
+    "id": "synth_fallback_100",
+    "query": "Explain the details in the paper 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' section 'References' for dataset.",
+    "category": "dataset",
+    "expected_papers": [
+      "2606.06481"
+    ],
+    "expected_entities": [
+      "Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection"
+    ],
+    "must_contain": [
+      "Operation-"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' under 'References'?",
+      "Summarize the section 'References' of 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection'."
+    ]
+  },
+  {
+    "id": "synth_fallback_101",
+    "query": "Explain the details in the paper 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' section 'References' for summary.",
+    "category": "summary",
+    "expected_papers": [
+      "2606.06481"
+    ],
+    "expected_entities": [
+      "Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection"
+    ],
+    "must_contain": [
+      "Operation-"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' under 'References'?",
+      "Summarize the section 'References' of 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection'."
+    ]
+  },
+  {
+    "id": "synth_fallback_102",
+    "query": "Explain the details in the paper 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' section 'Detector descriptions' for comparison.",
+    "category": "comparison",
+    "expected_papers": [
+      "2606.06481"
+    ],
+    "expected_entities": [
+      "Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection"
+    ],
+    "must_contain": [
+      "Operation-"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' under 'Detector descriptions'?",
+      "Summarize the section 'Detector descriptions' of 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection'."
+    ]
+  },
+  {
+    "id": "synth_fallback_103",
+    "query": "Explain the details in the paper 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' section 'Detector descriptions' for workflow.",
+    "category": "workflow",
+    "expected_papers": [
+      "2606.06481"
+    ],
+    "expected_entities": [
+      "Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection"
+    ],
+    "must_contain": [
+      "Operation-"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' under 'Detector descriptions'?",
+      "Summarize the section 'Detector descriptions' of 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection'."
+    ]
+  },
+  {
+    "id": "synth_fallback_104",
+    "query": "Explain the details in the paper 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' section 'Experimental Details' for future_work.",
+    "category": "future_work",
+    "expected_papers": [
+      "2606.06481"
+    ],
+    "expected_entities": [
+      "Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection"
+    ],
+    "must_contain": [
+      "Operation-"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' under 'Experimental Details'?",
+      "Summarize the section 'Experimental Details' of 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection'."
+    ]
+  },
+  {
+    "id": "synth_fallback_105",
+    "query": "Explain the details in the paper 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' section 'Experimental Details' for limitations.",
+    "category": "limitations",
+    "expected_papers": [
+      "2606.06481"
+    ],
+    "expected_entities": [
+      "Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection"
+    ],
+    "must_contain": [
+      "Operation-"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' under 'Experimental Details'?",
+      "Summarize the section 'Experimental Details' of 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection'."
+    ]
+  },
+  {
+    "id": "synth_fallback_106",
+    "query": "Explain the details in the paper 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' section 'Experimental Details' for multi_hop.",
+    "category": "multi_hop",
+    "expected_papers": [
+      "2606.06481"
+    ],
+    "expected_entities": [
+      "Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection"
+    ],
+    "must_contain": [
+      "Operation-"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' under 'Experimental Details'?",
+      "Summarize the section 'Experimental Details' of 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection'."
+    ]
+  },
+  {
+    "id": "synth_fallback_107",
+    "query": "How do I cook a perfect steak?",
+    "category": "ood",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "Instructions for cooking steak?",
+      "Recipe for pan-seared steak."
+    ]
+  },
+  {
+    "id": "synth_fallback_108",
+    "query": "Explain the model architecture of Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection 4.0.",
+    "category": "hallucination_trap",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "What is Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection 4.0 framework?",
+      "USAD 4.0 parameters size?"
+    ]
+  },
+  {
+    "id": "synth_fallback_109",
+    "query": "Explain the details in the paper 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' section 'Experimental Details' for experimental_results.",
+    "category": "experimental_results",
+    "expected_papers": [
+      "2606.06481"
+    ],
+    "expected_entities": [
+      "Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection"
+    ],
+    "must_contain": [
+      "Operation-"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' under 'Experimental Details'?",
+      "Summarize the section 'Experimental Details' of 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection'."
+    ]
+  },
+  {
+    "id": "synth_fallback_110",
+    "query": "Explain the details in the paper 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' section 'Experimental Details' for entity_linking.",
+    "category": "entity_linking",
+    "expected_papers": [
+      "2606.06481"
+    ],
+    "expected_entities": [
+      "Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection"
+    ],
+    "must_contain": [
+      "Operation-"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' under 'Experimental Details'?",
+      "Summarize the section 'Experimental Details' of 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection'."
+    ]
+  },
+  {
+    "id": "synth_fallback_111",
+    "query": "Explain the details in the paper 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' section 'Experimental Details' for citation_verification.",
+    "category": "citation_verification",
+    "expected_papers": [
+      "2606.06481"
+    ],
+    "expected_entities": [
+      "Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection"
+    ],
+    "must_contain": [
+      "Operation-"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' under 'Experimental Details'?",
+      "Summarize the section 'Experimental Details' of 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection'."
+    ]
+  },
+  {
+    "id": "synth_fallback_112",
+    "query": "Explain the details in the paper 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' section 'Experimental Details' for paper.",
+    "category": "paper",
+    "expected_papers": [
+      "2606.06481"
+    ],
+    "expected_entities": [
+      "Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection"
+    ],
+    "must_contain": [
+      "Operation-"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' under 'Experimental Details'?",
+      "Summarize the section 'Experimental Details' of 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection'."
+    ]
+  },
+  {
+    "id": "synth_fallback_113",
+    "query": "Explain the details in the paper 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' section 'Experimental Details' for method.",
+    "category": "method",
+    "expected_papers": [
+      "2606.06481"
+    ],
+    "expected_entities": [
+      "Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection"
+    ],
+    "must_contain": [
+      "Operation-"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection' under 'Experimental Details'?",
+      "Summarize the section 'Experimental Details' of 'Operation-Guided Progressive Human-to-AI Text Transformation Benchmark for Multi-Granularity AI-Text Detection'."
+    ]
+  },
+  {
+    "id": "synth_fallback_114",
+    "query": "Explain the details in the paper 'Pretraining Recurrent Networks without Recurrence' section 'Abstract' for dataset.",
+    "category": "dataset",
+    "expected_papers": [
+      "2606.06479"
+    ],
+    "expected_entities": [
+      "Pretraining Recurrent Networks without Recurrence"
+    ],
+    "must_contain": [
+      "Pretrainin"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Pretraining Recurrent Networks without Recurrence' under 'Abstract'?",
+      "Summarize the section 'Abstract' of 'Pretraining Recurrent Networks without Recurrence'."
+    ]
+  },
+  {
+    "id": "synth_fallback_115",
+    "query": "Explain the details in the paper 'Pretraining Recurrent Networks without Recurrence' section 'Background' for summary.",
+    "category": "summary",
+    "expected_papers": [
+      "2606.06479"
+    ],
+    "expected_entities": [
+      "Pretraining Recurrent Networks without Recurrence"
+    ],
+    "must_contain": [
+      "Pretrainin"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Pretraining Recurrent Networks without Recurrence' under 'Background'?",
+      "Summarize the section 'Background' of 'Pretraining Recurrent Networks without Recurrence'."
+    ]
+  },
+  {
+    "id": "synth_fallback_116",
+    "query": "Explain the details in the paper 'Pretraining Recurrent Networks without Recurrence' section 'Background' for comparison.",
+    "category": "comparison",
+    "expected_papers": [
+      "2606.06479"
+    ],
+    "expected_entities": [
+      "Pretraining Recurrent Networks without Recurrence"
+    ],
+    "must_contain": [
+      "Pretrainin"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Pretraining Recurrent Networks without Recurrence' under 'Background'?",
+      "Summarize the section 'Background' of 'Pretraining Recurrent Networks without Recurrence'."
+    ]
+  },
+  {
+    "id": "synth_fallback_117",
+    "query": "Explain the details in the paper 'Pretraining Recurrent Networks without Recurrence' section 'Background' for workflow.",
+    "category": "workflow",
+    "expected_papers": [
+      "2606.06479"
+    ],
+    "expected_entities": [
+      "Pretraining Recurrent Networks without Recurrence"
+    ],
+    "must_contain": [
+      "Pretrainin"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Pretraining Recurrent Networks without Recurrence' under 'Background'?",
+      "Summarize the section 'Background' of 'Pretraining Recurrent Networks without Recurrence'."
+    ]
+  },
+  {
+    "id": "synth_fallback_118",
+    "query": "Explain the details in the paper 'Pretraining Recurrent Networks without Recurrence' section 'Experiments' for future_work.",
+    "category": "future_work",
+    "expected_papers": [
+      "2606.06479"
+    ],
+    "expected_entities": [
+      "Pretraining Recurrent Networks without Recurrence"
+    ],
+    "must_contain": [
+      "Pretrainin"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Pretraining Recurrent Networks without Recurrence' under 'Experiments'?",
+      "Summarize the section 'Experiments' of 'Pretraining Recurrent Networks without Recurrence'."
+    ]
+  },
+  {
+    "id": "synth_fallback_119",
+    "query": "Explain the details in the paper 'Pretraining Recurrent Networks without Recurrence' section 'Experiments' for limitations.",
+    "category": "limitations",
+    "expected_papers": [
+      "2606.06479"
+    ],
+    "expected_entities": [
+      "Pretraining Recurrent Networks without Recurrence"
+    ],
+    "must_contain": [
+      "Pretrainin"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Pretraining Recurrent Networks without Recurrence' under 'Experiments'?",
+      "Summarize the section 'Experiments' of 'Pretraining Recurrent Networks without Recurrence'."
+    ]
+  },
+  {
+    "id": "synth_fallback_120",
+    "query": "Explain the details in the paper 'Pretraining Recurrent Networks without Recurrence' section 'Scaling Laws' for multi_hop.",
+    "category": "multi_hop",
+    "expected_papers": [
+      "2606.06479"
+    ],
+    "expected_entities": [
+      "Pretraining Recurrent Networks without Recurrence"
+    ],
+    "must_contain": [
+      "Pretrainin"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Pretraining Recurrent Networks without Recurrence' under 'Scaling Laws'?",
+      "Summarize the section 'Scaling Laws' of 'Pretraining Recurrent Networks without Recurrence'."
+    ]
+  },
+  {
+    "id": "synth_fallback_121",
+    "query": "How do I cook a perfect steak?",
+    "category": "ood",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "Instructions for cooking steak?",
+      "Recipe for pan-seared steak."
+    ]
+  },
+  {
+    "id": "synth_fallback_122",
+    "query": "Explain the model architecture of Pretraining Recurrent Networks without Recurrence 4.0.",
+    "category": "hallucination_trap",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "What is Pretraining Recurrent Networks without Recurrence 4.0 framework?",
+      "USAD 4.0 parameters size?"
+    ]
+  },
+  {
+    "id": "synth_fallback_123",
+    "query": "Explain the details in the paper 'Pretraining Recurrent Networks without Recurrence' section 'Related Works' for experimental_results.",
+    "category": "experimental_results",
+    "expected_papers": [
+      "2606.06479"
+    ],
+    "expected_entities": [
+      "Pretraining Recurrent Networks without Recurrence"
+    ],
+    "must_contain": [
+      "Pretrainin"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Pretraining Recurrent Networks without Recurrence' under 'Related Works'?",
+      "Summarize the section 'Related Works' of 'Pretraining Recurrent Networks without Recurrence'."
+    ]
+  },
+  {
+    "id": "synth_fallback_124",
+    "query": "Explain the details in the paper 'Pretraining Recurrent Networks without Recurrence' section 'References' for entity_linking.",
+    "category": "entity_linking",
+    "expected_papers": [
+      "2606.06479"
+    ],
+    "expected_entities": [
+      "Pretraining Recurrent Networks without Recurrence"
+    ],
+    "must_contain": [
+      "Pretrainin"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Pretraining Recurrent Networks without Recurrence' under 'References'?",
+      "Summarize the section 'References' of 'Pretraining Recurrent Networks without Recurrence'."
+    ]
+  },
+  {
+    "id": "synth_fallback_125",
+    "query": "Explain the details in the paper 'Pretraining Recurrent Networks without Recurrence' section 'References' for citation_verification.",
+    "category": "citation_verification",
+    "expected_papers": [
+      "2606.06479"
+    ],
+    "expected_entities": [
+      "Pretraining Recurrent Networks without Recurrence"
+    ],
+    "must_contain": [
+      "Pretrainin"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Pretraining Recurrent Networks without Recurrence' under 'References'?",
+      "Summarize the section 'References' of 'Pretraining Recurrent Networks without Recurrence'."
+    ]
+  },
+  {
+    "id": "synth_fallback_126",
+    "query": "Explain the details in the paper 'Pretraining Recurrent Networks without Recurrence' section 'References' for paper.",
+    "category": "paper",
+    "expected_papers": [
+      "2606.06479"
+    ],
+    "expected_entities": [
+      "Pretraining Recurrent Networks without Recurrence"
+    ],
+    "must_contain": [
+      "Pretrainin"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Pretraining Recurrent Networks without Recurrence' under 'References'?",
+      "Summarize the section 'References' of 'Pretraining Recurrent Networks without Recurrence'."
+    ]
+  },
+  {
+    "id": "synth_fallback_127",
+    "query": "Explain the details in the paper 'Pretraining Recurrent Networks without Recurrence' section 'References' for method.",
+    "category": "method",
+    "expected_papers": [
+      "2606.06479"
+    ],
+    "expected_entities": [
+      "Pretraining Recurrent Networks without Recurrence"
+    ],
+    "must_contain": [
+      "Pretrainin"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Pretraining Recurrent Networks without Recurrence' under 'References'?",
+      "Summarize the section 'References' of 'Pretraining Recurrent Networks without Recurrence'."
+    ]
+  },
+  {
+    "id": "synth_fallback_128",
+    "query": "Explain the details in the paper 'Pretraining Recurrent Networks without Recurrence' section 'References' for dataset.",
+    "category": "dataset",
+    "expected_papers": [
+      "2606.06479"
+    ],
+    "expected_entities": [
+      "Pretraining Recurrent Networks without Recurrence"
+    ],
+    "must_contain": [
+      "Pretrainin"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Pretraining Recurrent Networks without Recurrence' under 'References'?",
+      "Summarize the section 'References' of 'Pretraining Recurrent Networks without Recurrence'."
+    ]
+  },
+  {
+    "id": "synth_fallback_129",
+    "query": "Explain the details in the paper 'Pretraining Recurrent Networks without Recurrence' section 'References' for summary.",
+    "category": "summary",
+    "expected_papers": [
+      "2606.06479"
+    ],
+    "expected_entities": [
+      "Pretraining Recurrent Networks without Recurrence"
+    ],
+    "must_contain": [
+      "Pretrainin"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Pretraining Recurrent Networks without Recurrence' under 'References'?",
+      "Summarize the section 'References' of 'Pretraining Recurrent Networks without Recurrence'."
+    ]
+  },
+  {
+    "id": "synth_fallback_130",
+    "query": "Explain the details in the paper 'Pretraining Recurrent Networks without Recurrence' section 'References' for comparison.",
+    "category": "comparison",
+    "expected_papers": [
+      "2606.06479"
+    ],
+    "expected_entities": [
+      "Pretraining Recurrent Networks without Recurrence"
+    ],
+    "must_contain": [
+      "Pretrainin"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Pretraining Recurrent Networks without Recurrence' under 'References'?",
+      "Summarize the section 'References' of 'Pretraining Recurrent Networks without Recurrence'."
+    ]
+  },
+  {
+    "id": "synth_fallback_131",
+    "query": "Explain the details in the paper 'Pretraining Recurrent Networks without Recurrence' section 'References' for workflow.",
+    "category": "workflow",
+    "expected_papers": [
+      "2606.06479"
+    ],
+    "expected_entities": [
+      "Pretraining Recurrent Networks without Recurrence"
+    ],
+    "must_contain": [
+      "Pretrainin"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Pretraining Recurrent Networks without Recurrence' under 'References'?",
+      "Summarize the section 'References' of 'Pretraining Recurrent Networks without Recurrence'."
+    ]
+  },
+  {
+    "id": "synth_fallback_132",
+    "query": "Explain the details in the paper 'Pretraining Recurrent Networks without Recurrence' section 'References' for future_work.",
+    "category": "future_work",
+    "expected_papers": [
+      "2606.06479"
+    ],
+    "expected_entities": [
+      "Pretraining Recurrent Networks without Recurrence"
+    ],
+    "must_contain": [
+      "Pretrainin"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Pretraining Recurrent Networks without Recurrence' under 'References'?",
+      "Summarize the section 'References' of 'Pretraining Recurrent Networks without Recurrence'."
+    ]
+  },
+  {
+    "id": "synth_fallback_133",
+    "query": "Explain the details in the paper 'Pretraining Recurrent Networks without Recurrence' section 'Compute Resources Used' for limitations.",
+    "category": "limitations",
+    "expected_papers": [
+      "2606.06479"
+    ],
+    "expected_entities": [
+      "Pretraining Recurrent Networks without Recurrence"
+    ],
+    "must_contain": [
+      "Pretrainin"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Pretraining Recurrent Networks without Recurrence' under 'Compute Resources Used'?",
+      "Summarize the section 'Compute Resources Used' of 'Pretraining Recurrent Networks without Recurrence'."
+    ]
+  },
+  {
+    "id": "synth_fallback_134",
+    "query": "Explain the details in the paper 'Pretraining Recurrent Networks without Recurrence' section 'Compute Resources Used' for multi_hop.",
+    "category": "multi_hop",
+    "expected_papers": [
+      "2606.06479"
+    ],
+    "expected_entities": [
+      "Pretraining Recurrent Networks without Recurrence"
+    ],
+    "must_contain": [
+      "Pretrainin"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Pretraining Recurrent Networks without Recurrence' under 'Compute Resources Used'?",
+      "Summarize the section 'Compute Resources Used' of 'Pretraining Recurrent Networks without Recurrence'."
+    ]
+  },
+  {
+    "id": "synth_fallback_135",
+    "query": "How do I cook a perfect steak?",
+    "category": "ood",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "Instructions for cooking steak?",
+      "Recipe for pan-seared steak."
+    ]
+  },
+  {
+    "id": "synth_fallback_136",
+    "query": "Explain the model architecture of RREDCoT: Segment-Level Reward Redistribution for Reasoning Models 4.0.",
+    "category": "hallucination_trap",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "What is RREDCoT: Segment-Level Reward Redistribution for Reasoning Models 4.0 framework?",
+      "USAD 4.0 parameters size?"
+    ]
+  },
+  {
+    "id": "synth_fallback_137",
+    "query": "Explain the details in the paper 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' section 'Introduction' for experimental_results.",
+    "category": "experimental_results",
+    "expected_papers": [
+      "2606.06475"
+    ],
+    "expected_entities": [
+      "RREDCoT: Segment-Level Reward Redistribution for Reasoning Models"
+    ],
+    "must_contain": [
+      "RREDCoT: S"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' under 'Introduction'?",
+      "Summarize the section 'Introduction' of 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_138",
+    "query": "Explain the details in the paper 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' section 'Introduction' for entity_linking.",
+    "category": "entity_linking",
+    "expected_papers": [
+      "2606.06475"
+    ],
+    "expected_entities": [
+      "RREDCoT: Segment-Level Reward Redistribution for Reasoning Models"
+    ],
+    "must_contain": [
+      "RREDCoT: S"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' under 'Introduction'?",
+      "Summarize the section 'Introduction' of 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_139",
+    "query": "Explain the details in the paper 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' section 'Introduction' for citation_verification.",
+    "category": "citation_verification",
+    "expected_papers": [
+      "2606.06475"
+    ],
+    "expected_entities": [
+      "RREDCoT: Segment-Level Reward Redistribution for Reasoning Models"
+    ],
+    "must_contain": [
+      "RREDCoT: S"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' under 'Introduction'?",
+      "Summarize the section 'Introduction' of 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_140",
+    "query": "Explain the details in the paper 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' section 'Credit Assignment' for paper.",
+    "category": "paper",
+    "expected_papers": [
+      "2606.06475"
+    ],
+    "expected_entities": [
+      "RREDCoT: Segment-Level Reward Redistribution for Reasoning Models"
+    ],
+    "must_contain": [
+      "RREDCoT: S"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' under 'Credit Assignment'?",
+      "Summarize the section 'Credit Assignment' of 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_141",
+    "query": "Explain the details in the paper 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' section 'Integrating Reward Redistribution into Commonly Used RL Objectives' for method.",
+    "category": "method",
+    "expected_papers": [
+      "2606.06475"
+    ],
+    "expected_entities": [
+      "RREDCoT: Segment-Level Reward Redistribution for Reasoning Models"
+    ],
+    "must_contain": [
+      "RREDCoT: S"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' under 'Integrating Reward Redistribution into Commonly Used RL Objectives'?",
+      "Summarize the section 'Integrating Reward Redistribution into Commonly Used RL Objectives' of 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_142",
+    "query": "Explain the details in the paper 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' section 'Experiments' for dataset.",
+    "category": "dataset",
+    "expected_papers": [
+      "2606.06475"
+    ],
+    "expected_entities": [
+      "RREDCoT: Segment-Level Reward Redistribution for Reasoning Models"
+    ],
+    "must_contain": [
+      "RREDCoT: S"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' under 'Experiments'?",
+      "Summarize the section 'Experiments' of 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_143",
+    "query": "Explain the details in the paper 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' section 'Experiments' for summary.",
+    "category": "summary",
+    "expected_papers": [
+      "2606.06475"
+    ],
+    "expected_entities": [
+      "RREDCoT: Segment-Level Reward Redistribution for Reasoning Models"
+    ],
+    "must_contain": [
+      "RREDCoT: S"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' under 'Experiments'?",
+      "Summarize the section 'Experiments' of 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_144",
+    "query": "Explain the details in the paper 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' section 'References' for comparison.",
+    "category": "comparison",
+    "expected_papers": [
+      "2606.06475"
+    ],
+    "expected_entities": [
+      "RREDCoT: Segment-Level Reward Redistribution for Reasoning Models"
+    ],
+    "must_contain": [
+      "RREDCoT: S"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' under 'References'?",
+      "Summarize the section 'References' of 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_145",
+    "query": "Explain the details in the paper 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' section 'References' for workflow.",
+    "category": "workflow",
+    "expected_papers": [
+      "2606.06475"
+    ],
+    "expected_entities": [
+      "RREDCoT: Segment-Level Reward Redistribution for Reasoning Models"
+    ],
+    "must_contain": [
+      "RREDCoT: S"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' under 'References'?",
+      "Summarize the section 'References' of 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_146",
+    "query": "Explain the details in the paper 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' section 'Additional Equations' for future_work.",
+    "category": "future_work",
+    "expected_papers": [
+      "2606.06475"
+    ],
+    "expected_entities": [
+      "RREDCoT: Segment-Level Reward Redistribution for Reasoning Models"
+    ],
+    "must_contain": [
+      "RREDCoT: S"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' under 'Additional Equations'?",
+      "Summarize the section 'Additional Equations' of 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_147",
+    "query": "Explain the details in the paper 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' section 'Additional Equations' for limitations.",
+    "category": "limitations",
+    "expected_papers": [
+      "2606.06475"
+    ],
+    "expected_entities": [
+      "RREDCoT: Segment-Level Reward Redistribution for Reasoning Models"
+    ],
+    "must_contain": [
+      "RREDCoT: S"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' under 'Additional Equations'?",
+      "Summarize the section 'Additional Equations' of 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_148",
+    "query": "Explain the details in the paper 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' section 'Details on Experimental Settings' for multi_hop.",
+    "category": "multi_hop",
+    "expected_papers": [
+      "2606.06475"
+    ],
+    "expected_entities": [
+      "RREDCoT: Segment-Level Reward Redistribution for Reasoning Models"
+    ],
+    "must_contain": [
+      "RREDCoT: S"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models' under 'Details on Experimental Settings'?",
+      "Summarize the section 'Details on Experimental Settings' of 'RREDCoT: Segment-Level Reward Redistribution for Reasoning Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_149",
+    "query": "How do I cook a perfect steak?",
+    "category": "ood",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "Instructions for cooking steak?",
+      "Recipe for pan-seared steak."
+    ]
+  },
+  {
+    "id": "synth_fallback_150",
+    "query": "Explain the model architecture of Self-Augmenting Retrieval for Diffusion Language Models 4.0.",
+    "category": "hallucination_trap",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "What is Self-Augmenting Retrieval for Diffusion Language Models 4.0 framework?",
+      "USAD 4.0 parameters size?"
+    ]
+  },
+  {
+    "id": "synth_fallback_151",
+    "query": "Explain the details in the paper 'Self-Augmenting Retrieval for Diffusion Language Models' section 'Abstract' for experimental_results.",
+    "category": "experimental_results",
+    "expected_papers": [
+      "2606.06474"
+    ],
+    "expected_entities": [
+      "Self-Augmenting Retrieval for Diffusion Language Models"
+    ],
+    "must_contain": [
+      "Self-Augme"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Self-Augmenting Retrieval for Diffusion Language Models' under 'Abstract'?",
+      "Summarize the section 'Abstract' of 'Self-Augmenting Retrieval for Diffusion Language Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_152",
+    "query": "Explain the details in the paper 'Self-Augmenting Retrieval for Diffusion Language Models' section 'Abstract' for entity_linking.",
+    "category": "entity_linking",
+    "expected_papers": [
+      "2606.06474"
+    ],
+    "expected_entities": [
+      "Self-Augmenting Retrieval for Diffusion Language Models"
+    ],
+    "must_contain": [
+      "Self-Augme"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Self-Augmenting Retrieval for Diffusion Language Models' under 'Abstract'?",
+      "Summarize the section 'Abstract' of 'Self-Augmenting Retrieval for Diffusion Language Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_153",
+    "query": "Explain the details in the paper 'Self-Augmenting Retrieval for Diffusion Language Models' section 'Abstract' for citation_verification.",
+    "category": "citation_verification",
+    "expected_papers": [
+      "2606.06474"
+    ],
+    "expected_entities": [
+      "Self-Augmenting Retrieval for Diffusion Language Models"
+    ],
+    "must_contain": [
+      "Self-Augme"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Self-Augmenting Retrieval for Diffusion Language Models' under 'Abstract'?",
+      "Summarize the section 'Abstract' of 'Self-Augmenting Retrieval for Diffusion Language Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_154",
+    "query": "Explain the details in the paper 'Self-Augmenting Retrieval for Diffusion Language Models' section 'Abstract' for paper.",
+    "category": "paper",
+    "expected_papers": [
+      "2606.06474"
+    ],
+    "expected_entities": [
+      "Self-Augmenting Retrieval for Diffusion Language Models"
+    ],
+    "must_contain": [
+      "Self-Augme"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Self-Augmenting Retrieval for Diffusion Language Models' under 'Abstract'?",
+      "Summarize the section 'Abstract' of 'Self-Augmenting Retrieval for Diffusion Language Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_155",
+    "query": "Explain the details in the paper 'Self-Augmenting Retrieval for Diffusion Language Models' section 'Abstract' for method.",
+    "category": "method",
+    "expected_papers": [
+      "2606.06474"
+    ],
+    "expected_entities": [
+      "Self-Augmenting Retrieval for Diffusion Language Models"
+    ],
+    "must_contain": [
+      "Self-Augme"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Self-Augmenting Retrieval for Diffusion Language Models' under 'Abstract'?",
+      "Summarize the section 'Abstract' of 'Self-Augmenting Retrieval for Diffusion Language Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_156",
+    "query": "Explain the details in the paper 'Self-Augmenting Retrieval for Diffusion Language Models' section 'References' for dataset.",
+    "category": "dataset",
+    "expected_papers": [
+      "2606.06474"
+    ],
+    "expected_entities": [
+      "Self-Augmenting Retrieval for Diffusion Language Models"
+    ],
+    "must_contain": [
+      "Self-Augme"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Self-Augmenting Retrieval for Diffusion Language Models' under 'References'?",
+      "Summarize the section 'References' of 'Self-Augmenting Retrieval for Diffusion Language Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_157",
+    "query": "Explain the details in the paper 'Self-Augmenting Retrieval for Diffusion Language Models' section 'References' for summary.",
+    "category": "summary",
+    "expected_papers": [
+      "2606.06474"
+    ],
+    "expected_entities": [
+      "Self-Augmenting Retrieval for Diffusion Language Models"
+    ],
+    "must_contain": [
+      "Self-Augme"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Self-Augmenting Retrieval for Diffusion Language Models' under 'References'?",
+      "Summarize the section 'References' of 'Self-Augmenting Retrieval for Diffusion Language Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_158",
+    "query": "Explain the details in the paper 'Self-Augmenting Retrieval for Diffusion Language Models' section 'References' for comparison.",
+    "category": "comparison",
+    "expected_papers": [
+      "2606.06474"
+    ],
+    "expected_entities": [
+      "Self-Augmenting Retrieval for Diffusion Language Models"
+    ],
+    "must_contain": [
+      "Self-Augme"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Self-Augmenting Retrieval for Diffusion Language Models' under 'References'?",
+      "Summarize the section 'References' of 'Self-Augmenting Retrieval for Diffusion Language Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_159",
+    "query": "Explain the details in the paper 'Self-Augmenting Retrieval for Diffusion Language Models' section 'Additional Experimental Details' for workflow.",
+    "category": "workflow",
+    "expected_papers": [
+      "2606.06474"
+    ],
+    "expected_entities": [
+      "Self-Augmenting Retrieval for Diffusion Language Models"
+    ],
+    "must_contain": [
+      "Self-Augme"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Self-Augmenting Retrieval for Diffusion Language Models' under 'Additional Experimental Details'?",
+      "Summarize the section 'Additional Experimental Details' of 'Self-Augmenting Retrieval for Diffusion Language Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_160",
+    "query": "Explain the details in the paper 'Self-Augmenting Retrieval for Diffusion Language Models' section 'Additional Experimental Details' for future_work.",
+    "category": "future_work",
+    "expected_papers": [
+      "2606.06474"
+    ],
+    "expected_entities": [
+      "Self-Augmenting Retrieval for Diffusion Language Models"
+    ],
+    "must_contain": [
+      "Self-Augme"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Self-Augmenting Retrieval for Diffusion Language Models' under 'Additional Experimental Details'?",
+      "Summarize the section 'Additional Experimental Details' of 'Self-Augmenting Retrieval for Diffusion Language Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_161",
+    "query": "Explain the details in the paper 'Self-Augmenting Retrieval for Diffusion Language Models' section 'Additional Experimental Details' for limitations.",
+    "category": "limitations",
+    "expected_papers": [
+      "2606.06474"
+    ],
+    "expected_entities": [
+      "Self-Augmenting Retrieval for Diffusion Language Models"
+    ],
+    "must_contain": [
+      "Self-Augme"
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'Self-Augmenting Retrieval for Diffusion Language Models' under 'Additional Experimental Details'?",
+      "Summarize the section 'Additional Experimental Details' of 'Self-Augmenting Retrieval for Diffusion Language Models'."
+    ]
+  },
+  {
+    "id": "synth_fallback_162",
+    "query": "Explain the details in the paper 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' section 'Abstract' for multi_hop.",
+    "category": "multi_hop",
+    "expected_papers": [
+      "2606.06473"
+    ],
+    "expected_entities": [
+      "MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery"
+    ],
+    "must_contain": [
+      "MLEvolve: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' under 'Abstract'?",
+      "Summarize the section 'Abstract' of 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery'."
+    ]
+  },
+  {
+    "id": "synth_fallback_163",
+    "query": "How do I cook a perfect steak?",
+    "category": "ood",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "Instructions for cooking steak?",
+      "Recipe for pan-seared steak."
+    ]
+  },
+  {
+    "id": "synth_fallback_164",
+    "query": "Explain the model architecture of MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery 4.0.",
+    "category": "hallucination_trap",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "What is MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery 4.0 framework?",
+      "USAD 4.0 parameters size?"
+    ]
+  },
+  {
+    "id": "synth_fallback_165",
+    "query": "Explain the details in the paper 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' section 'Abstract' for experimental_results.",
+    "category": "experimental_results",
+    "expected_papers": [
+      "2606.06473"
+    ],
+    "expected_entities": [
+      "MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery"
+    ],
+    "must_contain": [
+      "MLEvolve: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' under 'Abstract'?",
+      "Summarize the section 'Abstract' of 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery'."
+    ]
+  },
+  {
+    "id": "synth_fallback_166",
+    "query": "Explain the details in the paper 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' section 'Abstract' for entity_linking.",
+    "category": "entity_linking",
+    "expected_papers": [
+      "2606.06473"
+    ],
+    "expected_entities": [
+      "MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery"
+    ],
+    "must_contain": [
+      "MLEvolve: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' under 'Abstract'?",
+      "Summarize the section 'Abstract' of 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery'."
+    ]
+  },
+  {
+    "id": "synth_fallback_167",
+    "query": "Explain the details in the paper 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' section 'Abstract' for citation_verification.",
+    "category": "citation_verification",
+    "expected_papers": [
+      "2606.06473"
+    ],
+    "expected_entities": [
+      "MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery"
+    ],
+    "must_contain": [
+      "MLEvolve: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' under 'Abstract'?",
+      "Summarize the section 'Abstract' of 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery'."
+    ]
+  },
+  {
+    "id": "synth_fallback_168",
+    "query": "Explain the details in the paper 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' section 'Abstract' for paper.",
+    "category": "paper",
+    "expected_papers": [
+      "2606.06473"
+    ],
+    "expected_entities": [
+      "MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery"
+    ],
+    "must_contain": [
+      "MLEvolve: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' under 'Abstract'?",
+      "Summarize the section 'Abstract' of 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery'."
+    ]
+  },
+  {
+    "id": "synth_fallback_169",
+    "query": "Explain the details in the paper 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' section 'Abstract' for method.",
+    "category": "method",
+    "expected_papers": [
+      "2606.06473"
+    ],
+    "expected_entities": [
+      "MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery"
+    ],
+    "must_contain": [
+      "MLEvolve: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' under 'Abstract'?",
+      "Summarize the section 'Abstract' of 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery'."
+    ]
+  },
+  {
+    "id": "synth_fallback_170",
+    "query": "Explain the details in the paper 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' section 'References' for dataset.",
+    "category": "dataset",
+    "expected_papers": [
+      "2606.06473"
+    ],
+    "expected_entities": [
+      "MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery"
+    ],
+    "must_contain": [
+      "MLEvolve: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' under 'References'?",
+      "Summarize the section 'References' of 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery'."
+    ]
+  },
+  {
+    "id": "synth_fallback_171",
+    "query": "Explain the details in the paper 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' section 'References' for summary.",
+    "category": "summary",
+    "expected_papers": [
+      "2606.06473"
+    ],
+    "expected_entities": [
+      "MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery"
+    ],
+    "must_contain": [
+      "MLEvolve: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' under 'References'?",
+      "Summarize the section 'References' of 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery'."
+    ]
+  },
+  {
+    "id": "synth_fallback_172",
+    "query": "Explain the details in the paper 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' section 'Appendix' for comparison.",
+    "category": "comparison",
+    "expected_papers": [
+      "2606.06473"
+    ],
+    "expected_entities": [
+      "MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery"
+    ],
+    "must_contain": [
+      "MLEvolve: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' under 'Appendix'?",
+      "Summarize the section 'Appendix' of 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery'."
+    ]
+  },
+  {
+    "id": "synth_fallback_173",
+    "query": "Explain the details in the paper 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' section 'Hyperparameters' for workflow.",
+    "category": "workflow",
+    "expected_papers": [
+      "2606.06473"
+    ],
+    "expected_entities": [
+      "MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery"
+    ],
+    "must_contain": [
+      "MLEvolve: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' under 'Hyperparameters'?",
+      "Summarize the section 'Hyperparameters' of 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery'."
+    ]
+  },
+  {
+    "id": "synth_fallback_174",
+    "query": "Explain the details in the paper 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' section 'Hyperparameters' for future_work.",
+    "category": "future_work",
+    "expected_papers": [
+      "2606.06473"
+    ],
+    "expected_entities": [
+      "MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery"
+    ],
+    "must_contain": [
+      "MLEvolve: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' under 'Hyperparameters'?",
+      "Summarize the section 'Hyperparameters' of 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery'."
+    ]
+  },
+  {
+    "id": "synth_fallback_175",
+    "query": "Explain the details in the paper 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' section 'Hyperparameters' for limitations.",
+    "category": "limitations",
+    "expected_papers": [
+      "2606.06473"
+    ],
+    "expected_entities": [
+      "MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery"
+    ],
+    "must_contain": [
+      "MLEvolve: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' under 'Hyperparameters'?",
+      "Summarize the section 'Hyperparameters' of 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery'."
+    ]
+  },
+  {
+    "id": "synth_fallback_176",
+    "query": "Explain the details in the paper 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' section 'Hyperparameters' for multi_hop.",
+    "category": "multi_hop",
+    "expected_papers": [
+      "2606.06473"
+    ],
+    "expected_entities": [
+      "MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery"
+    ],
+    "must_contain": [
+      "MLEvolve: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery' under 'Hyperparameters'?",
+      "Summarize the section 'Hyperparameters' of 'MLEvolve: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery'."
+    ]
+  },
+  {
+    "id": "synth_fallback_177",
+    "query": "How do I cook a perfect steak?",
+    "category": "ood",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "Instructions for cooking steak?",
+      "Recipe for pan-seared steak."
+    ]
+  },
+  {
+    "id": "synth_fallback_178",
+    "query": "Explain the model architecture of PC Layer: Polynomial Weight Preconditioning for Improving LLM Pre-Training 4.0.",
+    "category": "hallucination_trap",
+    "expected_papers": [],
+    "expected_entities": [],
+    "must_contain": [],
+    "must_not_contain": [],
+    "allow_abstain": true,
+    "variations": [
+      "What is PC Layer: Polynomial Weight Preconditioning for Improving LLM Pre-Training 4.0 framework?",
+      "USAD 4.0 parameters size?"
+    ]
+  },
+  {
+    "id": "synth_fallback_179",
+    "query": "Explain the details in the paper 'PC Layer: Polynomial Weight Preconditioning for Improving LLM Pre-Training' section 'Introduction' for experimental_results.",
+    "category": "experimental_results",
+    "expected_papers": [
+      "2606.06470"
+    ],
+    "expected_entities": [
+      "PC Layer: Polynomial Weight Preconditioning for Improving LLM Pre-Training"
+    ],
+    "must_contain": [
+      "PC Layer: "
+    ],
+    "must_not_contain": [],
+    "allow_abstain": false,
+    "variations": [
+      "What is discussed in 'PC Layer: Polynomial Weight Preconditioning for Improving LLM Pre-Training' under 'Introduction'?",
+      "Summarize the section 'Introduction' of 'PC Layer: Polynomial Weight Preconditioning for Improving LLM Pre-Training'."
+    ]
+  }
+]

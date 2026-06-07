@@ -16,7 +16,7 @@ arxiv:
   download_pdfs: false
 
 embeddings:
-  model_name: all-MiniLM-L6-v2
+  model_name: BAAI/bge-small-en-v1.5
   chunk_size: 500
   chunk_overlap: 50
 
@@ -107,7 +107,57 @@ generation:
     citation_precision: 0.10
     rerank: 0.15
 
+evaluation:
+  version: "1.0.0"
+  embedding_model_provenance: "BAAI/bge-small-en-v1.5"
+  judge_model_provenance: "Gemini 2.5 Flash"
+  fallback_judge_provenance: "Llama-3.3-70B"
+  latency_target_ms: 8000 # Max target latency before penalty
+  min_grounding_threshold: 0.65
+  calibration_bins: 5
+  bootstrap:
+    num_resamples: 1000
+    confidence_level: 0.95
+    random_seed: 42
+  benchmark_score:
+    retrieval: 0.20
+    citation: 0.20
+    faithfulness: 0.25
+    groundedness: 0.15
+    abstention: 0.10
+    latency: 0.10
+  cache:
+    invalidation_strategy: "lru" # Options: aggressive, keep_all, lru, ttl
+    max_models: 3
+    max_age_days: 30
+  category_weights:
+    dataset: 0.10
+    comparison: 0.10
+    ood: 0.05
+    hallucination_trap: 0.05
+    summary: 0.10
+    workflow: 0.05
+    future_work: 0.05
+    limitations: 0.05
+    experimental_results: 0.05
+    multi_hop: 0.10
+    citation_verification: 0.05
+    paper: 0.10
+    entity_linking: 0.05
+    method: 0.10
 
-
+observability:
+  enabled: true
+  trace_format: "jsonl"      # Options: json, jsonl
+  compress: true            # Compresses traces to .gz format
+  save_prompt_text: false   # Avoids dumping massive LLM prompt strings
+  save_prompt_hash: true
+  save_context_text: false  # Avoids dumping raw vector context blocks
+  save_context_hash: true
+  save_generation_text: true
+  record_cost: true
+  record_tokens: true
+  record_latencies: true
+  record_confidence: true
 
 
