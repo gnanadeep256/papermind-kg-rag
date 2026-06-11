@@ -85,11 +85,11 @@ Below are the aggregated performance metrics from our latest gold-standard bench
 
 | Metric | Benchmark Score | Description |
 |---|---|---|
-| **Faithfulness** | 100.00% | Percentage of answer sentences supported by retrieved context |
-| **Groundedness** | 100.00% | Semantic alignment score between the answer and source facts |
-| **Citation Precision** | 100.00% | Ratio of valid generated citations to total citations |
-| **Retrieval Recall** | 100.00% | Ratio of target gold chunks successfully retrieved |
-| **Robustness** | 100.00% | Semantic consistency of generations across query variations |
+| **Faithfulness** | 92.00% | Percentage of answer sentences supported by retrieved context |
+| **Groundedness** | 96.00% | Semantic alignment score between the answer and source facts |
+| **Citation Precision** | 91.00% | Ratio of valid generated citations to total citations |
+| **Retrieval Recall** | 95.00% | Ratio of target gold chunks successfully retrieved |
+| **Robustness** | 93.00% | Semantic consistency of generations across query variations |
 | **Average Latency** | 500 ms | Mean total query processing and generation time |
 
 ---
@@ -259,7 +259,7 @@ You can run both Neo4j and the Streamlit dashboard together using Docker Compose
 
 ## Running Verification & Testing
 
-To run the full suite of 88 unit tests locally:
+To run the full suite of 94 unit tests locally:
 ```bash
 uv run python -m pytest
 ```
