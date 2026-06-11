@@ -124,11 +124,11 @@ graph TD
 ### 3. Semantic Citation Alignment
 ```mermaid
 graph TD
-    GenAnswer[LLM Generated Answer with [N] Citations] --> Extract[Extract Citations & Sentences]
+    GenAnswer["LLM Generated Answer with [N] Citations"] --> Extract[Extract Citations & Sentences]
     Extract --> Verify[BGE Semantic Similarity Check]
     Verify --> Compare{Similarity >= Threshold?}
-    Compare -->|Yes| Keep[Retain Citation [N]]
-    Compare -->|No| Remove[Remove Citation [N]]
+    Compare -->|Yes| Keep["Retain Citation [N]"]
+    Compare -->|No| Remove["Remove Citation [N]"]
     Keep --> Final[Grounded Final Answer]
     Remove --> Final
 ```
@@ -206,7 +206,7 @@ Ensure you have `uv` and Python 3.11 installed on your local host.
 
 1. **Clone the Repository**:
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/gnanadeep256/papermind-kg-rag
    cd papermind-kg-rag
    ```
 
@@ -263,11 +263,5 @@ To run the full suite of 88 unit tests locally:
 ```bash
 uv run python -m pytest
 ```
-
----
-
-## Screenshots
-
-*Screenshots demonstrating the Streamlit user interface will be displayed here.*
 
 ---
