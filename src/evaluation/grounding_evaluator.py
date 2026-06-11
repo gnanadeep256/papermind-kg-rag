@@ -17,8 +17,8 @@ class GroundingEvaluator(BaseEvaluator):
 
     def _get_model(self) -> Any:
         if self._model is None:
-            from sentence_transformers import SentenceTransformer
-            self._model = SentenceTransformer("BAAI/bge-small-en-v1.5")
+            from src.llm import get_embedding_model
+            self._model = get_embedding_model("BAAI/bge-small-en-v1.5")
         return self._model
 
     def _lcs(self, x: List[str], y: List[str]) -> int:

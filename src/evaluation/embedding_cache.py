@@ -14,7 +14,7 @@ class SqliteEmbeddingCache:
                  max_age_days: Optional[int] = None) -> None:
         self.db_path = db_path
         os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
-        self.conn = sqlite3.connect(self.db_path)
+        self.conn = sqlite3.connect(self.db_path, check_same_thread=False, timeout=30.0)
         
         # Load from config if not explicitly provided
         if invalidation_strategy is None or max_models is None or max_age_days is None:

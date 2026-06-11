@@ -49,13 +49,18 @@ class CitationValidator:
         self.citation_precision = 1.0
         self.semantic_alignment_scores = []
         
+        # Clean up any bibliography/metadata details trailing the citation tag (e.g. [Citation 1]: Title...)
+        answer_text = re.sub(r"\[Citation\s+(\d+)\]\s*:\s*[^\[\n]*(?:arXiv|Section|Pages|et al\.)[^\[\n]*", r"[Citation \1]", answer_text)
+        
         # Count total generated citation tags
         generated_count = len(self.citation_pattern.findall(answer_text))
         self.generated_count = generated_count
         
         # Split answer into sentences
-        # Splitting on punctuation followed by whitespace
-        sentences = re.split(r'(?<=[.!?])\s+', answer_text)
+        # Splitting on punctuation followed by whitespace, keeping separators using capturing parenthesis
+        parts = re.split(r'((?<=[.!?])\s+)', answer_text)
+        sentences = parts[::2]
+        separators = parts[1::2]
         
         used_indices = set()
         invalid_citations = []
@@ -76,17 +81,66 @@ class CitationValidator:
         # Lazy load BGE model if vector_context is provided and not loaded yet
         if vector_context and self.model is None:
             try:
-                from sentence_transformers import SentenceTransformer
+                from src.llm import get_embedding_model
                 model_name = "BAAI/bge-small-en-v1.5"
                 if self.retriever and hasattr(self.retriever, "vector_retriever"):
                     model_name = self.retriever.vector_retriever.model_name
-                self.model = SentenceTransformer(model_name)
+                self.model = get_embedding_model(model_name)
             except Exception as e:
                 logger.error(f"Failed to load sentence transformer in citation validator: {e}")
 
         # Embedding cache
         sentence_embs = {}
         para_embs = {}
+        
+        # Batch precompute embeddings for all clean sentences and cited paragraphs to speed up validation
+        if vector_context and self.model is not None:
+            all_clean_sentences = []
+            cited_chunk_ids = set()
+            
+            for sentence in sentences:
+                sentence_matches = self.citation_pattern.findall(sentence)
+                if sentence_matches:
+                    clean_sentence = re.sub(r"\[Citation\s+\d+\]", "", sentence).strip()
+                    clean_sentence = re.sub(r"\s+", " ", clean_sentence)
+                    if clean_sentence:
+                        all_clean_sentences.append(clean_sentence)
+                    for num_str in sentence_matches:
+                        idx = int(num_str) - 1
+                        if 0 <= idx < len(available_citations):
+                            citation = available_citations[idx]
+                            cited_chunk_ids.add(citation.chunk_id)
+            
+            # Map paragraphs to embed
+            unique_paras = []
+            para_keys_map = []
+            for chunk_id in cited_chunk_ids:
+                if chunk_id in chunk_paragraphs:
+                    for p_idx, para in enumerate(chunk_paragraphs[chunk_id]):
+                        para_key = f"{chunk_id}_{p_idx}"
+                        unique_paras.append(para)
+                        para_keys_map.append((para_key, para))
+            
+            # Batch encode sentences
+            if all_clean_sentences:
+                try:
+                    unique_sentences = list(set(all_clean_sentences))
+                    sent_vectors = self.model.encode(unique_sentences, normalize_embeddings=True)
+                    for s_text, s_vec in zip(unique_sentences, sent_vectors):
+                        sentence_embs[s_text] = s_vec
+                except Exception as e:
+                    logger.error(f"Error batch encoding sentences: {e}")
+                    
+            # Batch encode paragraphs
+            if unique_paras:
+                try:
+                    unique_para_texts = list(set(unique_paras))
+                    para_vectors = self.model.encode(unique_para_texts, normalize_embeddings=True)
+                    text_to_vector = dict(zip(unique_para_texts, para_vectors))
+                    for para_key, para_text in para_keys_map:
+                        para_embs[para_key] = text_to_vector[para_text]
+                except Exception as e:
+                    logger.error(f"Error batch encoding paragraphs: {e}")
         
         processed_sentences = []
         
@@ -160,7 +214,13 @@ class CitationValidator:
             
             processed_sentences.append(processed_sentence)
             
-        validated_answer = " ".join(processed_sentences)
+        # Reconstruct the answer by alternate zipping to preserve the exact whitespace separators
+        reconstructed = []
+        for i in range(len(processed_sentences)):
+            reconstructed.append(processed_sentences[i])
+            if i < len(separators):
+                reconstructed.append(separators[i])
+        validated_answer = "".join(reconstructed)
         
         # Build used citations list sorted by index
         used_citations = [available_citations[idx] for idx in sorted(list(used_indices))]
@@ -168,7 +228,9 @@ class CitationValidator:
         # Clean spacing issues, empty brackets, etc.
         validated_answer = re.sub(r"\[\s*\]", "", validated_answer)
         # Clean double spaces
-        validated_answer = re.sub(r"\s+", " ", validated_answer)
+        validated_answer = re.sub(r"[ \t]+", " ", validated_answer)
+        # Clean multiple vertical newlines (reduce 3+ newlines to 2)
+        validated_answer = re.sub(r"\n{3,}", "\n\n", validated_answer)
         validated_answer = validated_answer.replace(" ,", ",").replace(" .", ".")
         validated_answer = validated_answer.strip()
         

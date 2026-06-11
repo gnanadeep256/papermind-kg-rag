@@ -5,38 +5,13 @@ from typing import Dict, Any, List, Set, Optional, Tuple, Sequence
 from pydantic import BaseModel
 from loguru import logger
 
+from src.retriever import BaseRetriever, RetrievalExplanation, Citation, RetrievalResult
 from src.vector_retriever import VectorRetriever
 from src.kg_retriever import Neo4jKGRetriever
 from src.utils.config import load_config
 from src.evidence.base_policy import RetrievalReason, SelectedEvidenceChunk
 
-class RetrievalExplanation(BaseModel):
-    type: str  # "semantic_match", "graph_neighbor", "introduced_method", "entity_link", "cross_encoder_boost", "packed_context", "neighbor_expansion", "paper_match"
-    score: Optional[float] = None
-    path_length: Optional[int] = None
-
-class Citation(BaseModel):
-    paper_title: str
-    arxiv_id: str
-    section: str
-    page_start: int
-    page_end: int
-    chunk_id: str
-    similarity_score: float
-    graph_bonus: float
-    combined_score: float
-    selected_by: List[str] = []
-    retrieval_reason: Optional[RetrievalReason] = None
-
-class RetrievalResult(BaseModel):
-    query: str
-    graph_context: Dict[str, Any]
-    vector_context: Sequence[SelectedEvidenceChunk]
-    source_papers: List[Dict[str, Any]]
-    citations: List[Citation]
-    retrieval_metadata: Dict[str, Any]
-
-class HybridRetriever:
+class HybridRetriever(BaseRetriever):
     """
     Orchestrates hybrid retrieval combining Neo4j Knowledge Graph queries
     and FAISS semantic vector searches. Merges, deduplicates, and ranks context.
@@ -45,6 +20,7 @@ class HybridRetriever:
         self.vector_retriever = VectorRetriever(vectorstore_dir)
         self.kg_retriever = Neo4jKGRetriever()
         self.entity_cache: Dict[str, Dict[str, Any]] = {}
+        self._retrieval_cache = {}
         
         # Load configuration parameters
         self.config = load_config()
@@ -174,11 +150,61 @@ class HybridRetriever:
             
         return "research"
 
-    def retrieve(self, query: str, top_k_vector: Optional[int] = None, top_k_graph: Optional[int] = None, max_chunks_per_paper: int = 2) -> RetrievalResult:
+    def mmr_diversify(self, query_emb: np.ndarray, candidates: List[Dict[str, Any]], top_k: int, lambda_param: float = 0.6) -> List[Dict[str, Any]]:
+        """
+        Filters raw candidates using Max Marginal Relevance to avoid redundant/overlapping passages.
+        """
+        if not candidates or top_k <= 0:
+            return []
+        if len(candidates) <= top_k:
+            return candidates
+            
+        texts = [c["text"] for c in candidates]
+        try:
+            embs = self.vector_retriever.model.encode(texts, normalize_embeddings=True)
+        except Exception as e:
+            logger.error(f"Error encoding candidates in MMR: {e}")
+            return candidates[:top_k]
+            
+        selected_indices = [0]
+        
+        while len(selected_indices) < top_k and len(selected_indices) < len(candidates):
+            best_mmr = -1e9
+            best_idx = -1
+            
+            for i, cand in enumerate(candidates):
+                if i in selected_indices:
+                    continue
+                
+                sim_query = float(np.dot(query_emb, embs[i]))
+                max_sim_selected = max(float(np.dot(embs[i], embs[sel])) for sel in selected_indices)
+                
+                mmr_score = lambda_param * sim_query - (1 - lambda_param) * max_sim_selected
+                if mmr_score > best_mmr:
+                    best_mmr = mmr_score
+                    best_idx = i
+                    
+            if best_idx != -1:
+                selected_indices.append(best_idx)
+            else:
+                break
+                
+        return [candidates[idx] for idx in selected_indices]
+
+    def retrieve(self, query: str, top_k_vector: Optional[int] = None, top_k_graph: Optional[int] = None, max_chunks_per_paper: int = 2, category: Optional[str] = None) -> RetrievalResult:
         """
         Gathers context from both vector store and Neo4j graph, ranks by similarity
         and graph connectivity, deduplicates files, and constructs structured Pydantic outputs.
         """
+        # Retrieval Cache Check
+        normalized_query = re.sub(r"\s+", " ", query.strip().lower())
+        now = time.time()
+        if normalized_query in self._retrieval_cache:
+            ts, cached_res = self._retrieval_cache[normalized_query]
+            if now - ts < 180:  # 3 minutes TTL
+                logger.info(f"Retrieval cache hit for query: '{query}'")
+                return cached_res
+
         start_time = time.time()
         
         # --- Step 1: Candidate Entity Discovery (Semantic + Regex Exact) ---
@@ -223,39 +249,72 @@ class HybridRetriever:
                         query_entities.append(dict(entity))
                         query_entity_ids.add(entity["entity_id"])
                         
+        # Adaptive Retrieval Policy based on classified category & Token Budget
+        prioritized_sections = []
+        if category:
+            if category == "summary":
+                token_budget = 5000
+            elif category in ["method", "workflow", "implementation", "how"]:
+                token_budget = 5000
+            elif category in ["dataset", "evaluation"]:
+                token_budget = 4000
+            elif category in ["definition", "why"]:
+                token_budget = 4000
+            elif category == "future_work":
+                token_budget = 5000
+                prioritized_sections = ["conclusion", "future work", "future", "discussion", "outlook"]
+            elif category == "limitations":
+                token_budget = 5000
+                prioritized_sections = ["conclusion", "limitations", "limitation", "discussion"]
+            elif category == "comparison":
+                token_budget = 5000
+            elif "architecture" in query.lower() or "design" in query.lower():
+                token_budget = 5000
+            else:
+                token_budget = 5000
+        else:
+            intent_heur = self.detect_intent(query, query_entities)
+            token_budget = self.token_budgets.get(intent_heur, 5000)
+
+        # Set top_k vector targets dynamically based on token budget (approx 800 tokens per chunk)
+        chosen_top_k_vector = max(4, int(token_budget / 800))
+        self._current_prioritized_sections = prioritized_sections
+
         # --- Step 2: Intent Classification & Strategy Routing ---
         intent = self.detect_intent(query, query_entities)
         
         # Set default weights and token budgets per strategy routing
         if intent == "paper":
             strategy_name = "vector-heavy"
-            chosen_top_k_vector = top_k_vector if top_k_vector is not None else 8
             chosen_top_k_graph = top_k_graph if top_k_graph is not None else 2
             hops = 1
         elif intent == "method":
             strategy_name = "hybrid"
-            chosen_top_k_vector = top_k_vector if top_k_vector is not None else 5
             chosen_top_k_graph = top_k_graph if top_k_graph is not None else 8
             hops = 1
         elif intent == "dataset":
             strategy_name = "graph-heavy"
-            chosen_top_k_vector = top_k_vector if top_k_vector is not None else 3
             chosen_top_k_graph = top_k_graph if top_k_graph is not None else 10
             hops = 2
         else: # research
             strategy_name = "deep-hybrid"
-            chosen_top_k_vector = top_k_vector if top_k_vector is not None else 6
             chosen_top_k_graph = top_k_graph if top_k_graph is not None else 12
             hops = 2
-            
-        token_budget = self.token_budgets.get(intent, 5000)
-        
-        # --- Step 3: Semantic Vector Search & Optional Cross-Encoder Reranking ---
+
+        # --- Step 3: Semantic Vector Search & MMR Diversification ---
         vector_start = time.time()
-        # Fetch extra raw candidates to account for Cross-Encoder filtering or diversity capping
-        fetch_k = chosen_top_k_vector * 2 if self.enable_cross_encoder else chosen_top_k_vector
+        # Fetch extra raw candidates to account for MMR and Cross-Encoder filtering
+        fetch_k = chosen_top_k_vector * 3
         raw_candidates_k = fetch_k * max_chunks_per_paper
         raw_chunks = self.vector_retriever.search(query, k=raw_candidates_k)
+        
+        # Stage 1: Evidence Pre-Verification (Check valid format and not empty)
+        verified_raw_chunks = []
+        for chunk in raw_chunks:
+            if chunk.get("text") and chunk.get("chunk_id") and chunk.get("arxiv_id"):
+                verified_raw_chunks.append(chunk)
+        raw_chunks = verified_raw_chunks
+        
         vector_time_ms = (time.time() - vector_start) * 1000
         
         # Filter raw chunks to enforce max chunks per paper limit
@@ -269,20 +328,22 @@ class HybridRetriever:
                 filtered_chunks.append(chunk)
                 paper_counts[arxiv_id] = count + 1
                 
+        # Apply MMR Diversification
+        if filtered_chunks and self.vector_retriever.model is not None:
+            prefixed_query = f"Represent this sentence for searching relevant passages: {query}"
+            query_emb = self.vector_retriever.model.encode([prefixed_query], normalize_embeddings=True)[0]
+            filtered_chunks = self.mmr_diversify(query_emb, filtered_chunks, chosen_top_k_vector)
+
         # Optional Cross-Encoder Reranking
         rerank_start = time.time()
         if self.enable_cross_encoder and self.cross_encoder is not None and filtered_chunks:
             pairs = [[query, c["text"]] for c in filtered_chunks]
             ce_scores = self.cross_encoder.predict(pairs)
             for chunk, score in zip(filtered_chunks, ce_scores):
-                # Map BGE Reranker logit to 0-1 range using sigmoid
                 sig_score = 1.0 / (1.0 + np.exp(-float(score)))
                 chunk["rerank_score"] = sig_score
-            # Re-sort by rerank_score
             filtered_chunks.sort(key=lambda x: x.get("rerank_score", x["score"]), reverse=True)
             
-        # Cap at chosen_top_k_vector total chunks
-        filtered_chunks = filtered_chunks[:chosen_top_k_vector]
         rerank_time_ms = (time.time() - rerank_start) * 1000
         
         # --- Step 4: Expand Entities from Retrieved Vector Chunks ---
@@ -650,7 +711,7 @@ class HybridRetriever:
             "rerank_time_ms": float(rerank_time_ms)
         }
         
-        return RetrievalResult(
+        result = RetrievalResult(
             query=query,
             graph_context=graph_context,
             vector_context=final_context,
@@ -658,6 +719,8 @@ class HybridRetriever:
             citations=citations,
             retrieval_metadata=retrieval_metadata
         )
+        self._retrieval_cache[normalized_query] = (time.time(), result)
+        return result
 
     def _merge_chunk_group(self, group: List[Any]) -> SelectedEvidenceChunk:
         """Merges a list of contiguous chunks into a single SelectedEvidenceChunk."""

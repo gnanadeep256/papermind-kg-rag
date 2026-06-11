@@ -90,9 +90,9 @@ class BenchmarkRunner:
         self.dry_run = dry_run
         
         # Load SentenceTransformer once and wrap in CachedEmbeddingModel
-        from sentence_transformers import SentenceTransformer
+        from src.llm import get_embedding_model
         embedding_model_provenance = self.eval_config.get("embedding_model_provenance", "BAAI/bge-small-en-v1.5")
-        base_model = SentenceTransformer("BAAI/bge-small-en-v1.5")
+        base_model = get_embedding_model(embedding_model_provenance)
         self.embedding_model = CachedEmbeddingModel(base_model, model_name=embedding_model_provenance)
         
         # Initialize evaluators

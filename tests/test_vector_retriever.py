@@ -5,7 +5,7 @@ from src.vector_retriever import VectorRetriever
 
 def test_vector_retriever_lifecycle() -> None:
     """Verify VectorRetriever resources are loaded correctly."""
-    with patch("src.vector_retriever.SentenceTransformer") as mock_model, \
+    with patch("src.llm.get_embedding_model") as mock_get_model, \
          patch("src.evaluation.embedding_cache.CachedEmbeddingModel") as mock_cached_model, \
          patch("src.vector_retriever.faiss.read_index") as mock_read_index, \
          patch("src.vector_retriever.load_config") as mock_load_config, \
@@ -24,13 +24,13 @@ def test_vector_retriever_lifecycle() -> None:
         retriever = VectorRetriever()
         retriever.load()
         
-        mock_model.assert_called_once_with("BAAI/bge-small-en-v1.5")
+        mock_get_model.assert_called_once_with("BAAI/bge-small-en-v1.5")
         mock_read_index.assert_called_once_with(retriever.index_path)
         assert len(retriever.metadata) == 2
 
 def test_vector_retriever_search() -> None:
     """Verify retriever search query embeds input and maps top-k indices to metadata correctly."""
-    with patch("src.vector_retriever.SentenceTransformer") as mock_model_class, \
+    with patch("src.llm.get_embedding_model") as mock_get_model, \
          patch("src.evaluation.embedding_cache.CachedEmbeddingModel") as mock_cached_model, \
          patch("src.vector_retriever.faiss.read_index") as mock_read_index, \
          patch("src.vector_retriever.load_config") as mock_load_config, \
@@ -45,9 +45,6 @@ def test_vector_retriever_search() -> None:
             {"chunk_id": "c1", "arxiv_id": "a1", "title": "t1", "section": "s1", "page_start": 1, "page_end": 2, "chunk_word_count": 1, "text": "text1"},
             {"chunk_id": "c2", "arxiv_id": "a2", "title": "t2", "section": "s2", "page_start": 3, "page_end": 3, "chunk_word_count": 1, "text": "text2"}
         ]
-        
-        mock_model = MagicMock()
-        mock_model_class.return_value = mock_model
         
         # Configure the mock CachedEmbeddingModel to return query vector
         mock_cached_model.return_value.encode.return_value = [np.zeros(384, dtype=np.float32)]

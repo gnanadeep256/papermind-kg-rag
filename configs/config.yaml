@@ -3,6 +3,11 @@ project:
   version: 0.1.0
   last_updated: auto
 
+corpus:
+  include_foundational: true
+  incremental: true
+
+
 data:
   raw_dir: data/raw
   processed_dir: data/processed
@@ -29,7 +34,7 @@ llm:
   reasoning_model: llama-3
 
   extraction_provider: groq
-  extraction_model: qwen/qwen3-32b
+  extraction_model: llama-3.3-70b-versatile
 
   temperature: 0.0
 
@@ -38,8 +43,8 @@ api:
   port: 8000
 
 extraction:
-  max_papers: 10
-  pause_seconds: 3.0
+  max_papers: 150
+  pause_seconds: 1.5
   request_delay_seconds: 1.0
 
 retrieval:

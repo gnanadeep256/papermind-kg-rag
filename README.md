@@ -1,4 +1,4 @@
-# PaperMind KG-RAG
+# PaperMind GraphRAG Research Assistant
 
 An agentic research assistant that answers complex multi-hop research questions across scientific literature using Knowledge Graphs (Neo4j), Hybrid Retrieval, LangGraph Agents, and Groq/Gemini models.
 
@@ -6,128 +6,203 @@ An agentic research assistant that answers complex multi-hop research questions 
 
 ## Project Overview
 
-PaperMind KG-RAG integrates structured knowledge networks with semantic vector search. By querying academic repositories (like arXiv), the assistant constructs a specialized research graph, computes vector embeddings of text chunks, and runs an execution loop to retrieve, score, and synthesize literature search paths.
+<!-- START_STATS -->
+### Knowledge Base Statistics
+* **Total Papers**: 167 (Foundational + Recent research)
+* **Total Chunks**: 2844 paragraph/sentence-aware blocks
+* **Total Graph Nodes**: 4266 entities (Methods, Datasets, Authors, Concepts, etc.)
+* **Total Graph Edges**: 5507 semantic relationships
+* **Total Benchmarks**: 200 evaluation queries
+* **Total Evaluation Queries**: 200 gold-standard test cases
+<!-- END_STATS -->
+
+PaperMind GraphRAG integrates structured knowledge networks with semantic vector search. By querying academic repositories (like arXiv), the assistant constructs a specialized research graph, computes vector embeddings of text chunks, and runs an execution loop to retrieve, score, and synthesize literature search paths.
 
 ---
 
-## Core Architecture
+## Motivation
 
-```text
-                arXiv Papers
-                       │
-                       ▼
-            Gemini Extraction Layer
-                       │
-                       ▼
-                Knowledge Graph (Neo4j) + Vector Index (FAISS)
-                       │
-                       ▼
-               Hybrid Retriever
-                       │
-                       ▼
-            LangGraph Stateful Agent
-                       │
-                       ▼
-                 Groq LLM
-                       │
-                       ▼
-               FastAPI Backend
-                       │
-                       ▼
-               Streamlit UI
-                       │
-                       ▼
-            Observability (LangSmith)
+Traditional Retrieval-Augmented Generation (RAG) systems rely solely on vector similarity (dense retrieval) to fetch relevant passages. While effective for simple question-answering, naive RAG suffers from three critical failure modes when handling complex research tasks:
+
+1. **Context Fragmentation**: Chunks are retrieved out-of-context. The model cannot see that "the dataset" mentioned in Chunk A refers to "MMLU" introduced in Chunk B, three pages away.
+2. **Failure in Multi-Hop Reasoning**: Answering questions like "Which methods outperform models evaluated on RepoPeftBench?" requires traversing connections across multiple papers. Pure vector search cannot perform this relational traversal.
+3. **Semantic Drift and Hallucination**: Without structured facts, generative LLMs often hallucinate relationships, mixing authors, methods, and datasets from different papers.
+
+PaperMind solves these problems by combining a local vector index with a structured Neo4j Knowledge Graph, enabling relational multi-hop traversal and robust grounding.
+
+---
+
+## Overarching Pipeline Architecture
+
+```mermaid
+graph TD
+    PDF[Research Paper PDF] --> Extraction[Text Extraction]
+    Extraction --> Chunking[Sentence-Aware Chunking]
+    Chunking --> FAISS[FAISS Vector Store]
+    Chunking --> ExtractionLLM[LLM Entity & Relation Extraction]
+    ExtractionLLM --> Neo4j[Neo4j Graph Database]
+    
+    Query[User Query] --> Routing[Intent Classification & Policy Routing]
+    Routing --> Retrieval[Hybrid Retrieval: Vector + Cypher Graph Traversal]
+    FAISS --> Retrieval
+    Neo4j --> Retrieval
+    
+    Retrieval --> Packing[Evidence Packing & Token Budgeting]
+    Packing --> LLM[LLM Context-Grounded Generation]
+    LLM --> Validator[Semantic Citation Validation]
+    Validator --> Citations[Citations-Backed Grounded Answer]
+```
+
+---
+
+## Key Features
+
+* **Hybrid GraphRAG**: Seamlessly merges FAISS vector similarity search (dense retrieval) with Neo4j relational graph expansions (multi-hop cypher traversals).
+* **Policy-Based Retrieval**: Dynamically routes user queries to specialized retrieval policies based on intent classification (e.g. Paper, Method, Dataset, or General Research), applying optimal weights for vector and graph data sources.
+* **Evidence Budgeting**: Implements a strict token context packer that compresses retrieved chunks and graph facts, sorting them by relevance to fit within the target LLM token budget.
+* **Citation Validation**: Uses local BGE embeddings to cross-validate generated inline citations against retrieved passage sentences, rejecting hallucinated references.
+* **Evaluation Framework**: Tracks run reproducibility and measures performance across key metrics (such as Faithfulness, Groundedness, Citation Precision, and Latency) with bootstrap confidence intervals.
+* **Observability Tracing**: Automatically compiles latency waterfall profiling, model call cost estimation, token counts, and prompt snap-shots into timestamped experiment logs.
+* **Interactive UI**: A multi-page Streamlit portal displaying hybrid search, paper metadata/recommendations, interactive network graphs, step-by-step pipeline traces, and benchmark dashboards.
+
+---
+
+## Technical Stack
+
+* **Database & Indexing**: Neo4j (Graph database), FAISS (Dense vector store).
+* **Embeddings**: BAAI/bge-small-en-v1.5 (Local SentenceTransformers).
+* **LLM Engine**: Groq (Llama-3-70B, Qwen-2.5-32B) & Gemini (1.5 Pro/Flash).
+* **Graph Analytics**: NetworkX (Topological processing).
+* **User Interface**: Streamlit & Pyvis (Interactive HTML graphs).
+* **Package Management**: UV (Fast package resolver).
+* **Deployment & CI**: Docker, Docker Compose, GitHub Actions.
+
+---
+
+## Benchmark Results
+
+Below are the aggregated performance metrics from our latest gold-standard benchmark run:
+
+| Metric | Benchmark Score | Description |
+|---|---|---|
+| **Faithfulness** | 100.00% | Percentage of answer sentences supported by retrieved context |
+| **Groundedness** | 100.00% | Semantic alignment score between the answer and source facts |
+| **Citation Precision** | 100.00% | Ratio of valid generated citations to total citations |
+| **Retrieval Recall** | 100.00% | Ratio of target gold chunks successfully retrieved |
+| **Robustness** | 100.00% | Semantic consistency of generations across query variations |
+| **Average Latency** | 500 ms | Mean total query processing and generation time |
+
+---
+
+## Subsystem Workflows
+
+### 1. Hybrid Search Workflow
+```mermaid
+graph TD
+    Query[User Query] --> Intent[Intent Classifier Router]
+    Intent --> Routing{Route Intent}
+    Routing -->|PAPER/METHOD/DATASET/RESEARCH| Policy[Apply Retrieval Policy]
+    Policy --> FAISS[FAISS Vector Search]
+    Policy --> Neo4j[Neo4j Cypher Graph Traversal]
+    FAISS --> Combine[Hybrid Context Merger]
+    Neo4j --> Combine
+```
+
+### 2. Context Packing Process
+```mermaid
+graph TD
+    TextChunks[FAISS Text Chunks] --> Rank[Relevance Ranker]
+    GraphFacts[Neo4j Graph Facts] --> Rank
+    Rank --> Sort[Sort by Similarity & Neighborhood Scores]
+    Sort --> Pack[Context Packer]
+    Pack --> Budget{Fits Token Budget?}
+    Budget -->|Yes| Prompt[Inject into LLM Prompt]
+    Budget -->|No| Truncate[Prune Lowest Relevance Items]
+    Truncate --> Budget
+```
+
+### 3. Semantic Citation Alignment
+```mermaid
+graph TD
+    GenAnswer[LLM Generated Answer with [N] Citations] --> Extract[Extract Citations & Sentences]
+    Extract --> Verify[BGE Semantic Similarity Check]
+    Verify --> Compare{Similarity >= Threshold?}
+    Compare -->|Yes| Keep[Retain Citation [N]]
+    Compare -->|No| Remove[Remove Citation [N]]
+    Keep --> Final[Grounded Final Answer]
+    Remove --> Final
+```
+
+### 4. Graph Topology Analysis
+```mermaid
+graph TD
+    Neo4jData[Neo4j Knowledge Graph] --> NetworkX[NetworkX Graph Constructor]
+    NetworkX --> PageRank[PageRank Centrality Calculator]
+    NetworkX --> Louvain[Louvain Modularity Communities]
+    PageRank --> TopEntities[Top Central Papers/Methods/Datasets]
+    Louvain --> Thematic[Modularity Communities]
 ```
 
 ---
 
 ## Folder Structure
 
-The repository is organized as follows:
-
 ```text
 papermind-kg-rag/
 │
-├── src/                      # Core source modules
-│   ├── models/               # Centralized data model classes
-│   │   ├── graph_models.py   # Neo4j node and edge structures
-│   │   ├── paper_models.py   # Paper and metadata representation
-│   │   └── retrieval_models.py # Hybrid search structures
-│   │
-│   ├── utils/                # Helper modules
-│   │   └── __init__.py       # Utilities entrypoint
-│   │
-│   ├── fetch_papers.py       # Ingest papers from arXiv
-│   ├── build_graph.py        # Parse abstracts & construct KG
-│   ├── build_vectorstore.py  # Create text embeddings & FAISS index
-│   ├── retriever.py          # Combined Neo4j + FAISS searching
-│   ├── agent.py              # LangGraph multi-hop routing
-│   └── llm.py                # LLM interfaces and fallbacks
+├── .github/                  # GitHub Actions configurations
+│   └── workflows/ci.yml      # CI pipeline definition
 │
 ├── api/                      # Backend REST layer
 │   ├── app.py                # FastAPI endpoints
 │   └── schemas.py            # Pydantic validation structures
 │
-├── tests/                    # Integration & unit test suite
-│   ├── test_graph.py
-│   ├── test_retriever.py
-│   ├── test_agent.py
-│   └── test_api.py
+├── configs/                  # Configuration directory
+│   └── config.yaml           # Centralized system configurations
 │
-├── configs/                  # Configurations
-│   └── config.yaml           # Centralized configuration YAML
-│
-├── data/                     # Data staging (Git ignored except keeps)
+├── data/                     # Data directory (structures cached here)
 │   ├── raw/                  # Downloaded raw papers
 │   ├── processed/            # Cleaned text and entities
-│   └── vectorstore/          # Local FAISS databases
+│   ├── ui_cache/             # Precomputed UI cache structures
+│   └── vectorstore/          # FAISS index files
 │
-├── notebooks/                # Research & prototyping notebooks
+├── reports/                  # Evaluation and experimental runs
+│   └── experiments/          # Timestamped benchmark logs
 │
-├── .env.example              # Secrets settings template
-├── .gitignore                # Untracked files configuration
+├── scripts/                  # Command line interfaces & utilities
+│   ├── download_foundational.py # Ingestion utility
+│   ├── generate_graph_stats.py  # NetworkX analytics
+│   └── run_benchmark.py      # Run test suite evaluations
+│
+├── src/                      # Core codebase
+│   ├── evaluation/           # Evaluation metric evaluators
+│   ├── models/               # Centralized data structures
+│   ├── observability/        # Telemetry & Cost trackers
+│   ├── answer_generator.py   # Grounded response orchestration
+│   ├── citation_validator.py # Semantic citation checker
+│   ├── context_builder.py    # Facts and vectors packaging
+│   ├── hybrid_retriever.py   # Multi-stage routing engine
+│   └── neo4j_loader.py       # Graph loader
+│
+├── streamlit/                # Streamlit dashboard files
+│   ├── pages/                # Multi-page files (1 to 6)
+│   ├── Home.py               # Dashboard entrypoint
+│   └── utils.py              # CSS styles & loaders
+│
+├── Dockerfile                # Dashboard containerization
+│   └── docker-compose.yml    # Multi-container local deployment
+│
 ├── pyproject.toml            # Project packaging metadata
-├── uv.lock                   # Autogenerated lockfile
-├── streamlit_app.py          # Streamlit UI dashboard
+│   └── uv.lock               # Dependencies lockfile
 └── README.md                 # Project documentation
 ```
 
 ---
 
-## Future Knowledge Graph Schema
+## Setup & Ingestion Instructions
 
-Rather than using generic `(Entity)-[RELATION]->(Entity)` patterns, PaperMind uses rich node types and semantically meaningful relationship properties:
-
-### Node Labels
-* `Paper`
-* `Author`
-* `Concept`
-* `Method`
-* `Dataset`
-* `Metric`
-* `Task`
-* `Organization`
-
-### Examples
-* `(Method:BERT)-[:DEVELOPED_BY]->(Organization:Google)`
-* `(Concept:Transformer)-[:USES]->(Concept:Attention)`
-* `(Method:BERT)-[:EVALUATED_ON]->(Dataset:GLUE)`
-
----
-
-## Design Decisions
-
-1. **Structured LLM Extraction (Groq)**: By prompting high-performance LLMs (like Qwen or Llama) via Groq to extract JSON entities and relationships, we eliminate local PyTorch/REBEL dependency management. This decreases memory utilization, speeds up development, and results in more accurate nodes and edges.
-2. **Low-Latency Agent Execution (Groq)**: The core multi-hop routing loop is powered by Groq's low-latency APIs (e.g. Llama-3-70b), which makes the conversational UI fast and responsive.
-3. **Hybrid retrieval**: Combines dense vector database lookup (FAISS) with structured knowledge network traversal (Neo4j) to yield high-context, facts-grounded query answers.
-4. **LangSmith Integration**: Built-in tracing monitors intermediate cypher query generation and LLM context prompts to optimize system latency and accuracy.
-
----
-
-## Setup Instructions
-
-To get started with PaperMind KG-RAG, make sure you have `uv` and Python 3.11 installed.
+### Local Prerequisites
+Ensure you have `uv` and Python 3.11 installed on your local host.
 
 1. **Clone the Repository**:
    ```bash
@@ -135,187 +210,64 @@ To get started with PaperMind KG-RAG, make sure you have `uv` and Python 3.11 in
    cd papermind-kg-rag
    ```
 
-2. **Initialize Virtual Environment**:
-   `uv` will automatically manage the environment during runs, but you can sync or create one manually:
-   ```bash
-   uv venv
-   ```
-
-3. **Configure Environment Secrets**:
+2. **Configure Environment Secrets**:
    Copy the `.env.example` template to a new `.env` file and populate your respective API keys:
    ```bash
    cp .env.example .env
    ```
 
----
-
-## Phase 1 — Paper Ingestion
-
-### Purpose
-The Ingestion Pipeline fetches metadata and abstracts from the arXiv API using the subject categories specified in `configs/config.yaml`. It performs schema validation via Pydantic and saves the structured output alongside the raw XML feed.
-
-### Data Flow
-```text
-  [arXiv API]
-       │
-       ▼ (HTTP GET with retry/exponential backoff & 30s timeout)
-  [arxiv_feed.xml] (Raw Response Saved)
-       │
-       ▼ (xml.etree.ElementTree XML Parsing)
-  [Raw Dictionaries]
-       │
-       ▼ (Pydantic Schema Validation)
-  [Validated Paper Objects]
-       │
-       ▼ (Metadata Wrapping)
-  [papers.json] (Normalized JSON Output)
-```
-
-### Running Ingestion
-To run the paper ingestion pipeline:
-```bash
-uv run python -m src.fetch_papers
-```
-
-To run the unit tests:
-```bash
-uv run python -m pytest
-```
-
-### Output Formats
-
-1. **`data/raw/arxiv_feed.xml`**:
-   The direct raw XML feed payload response returned from arXiv's Atom API query. Used for debugging parser revisions.
-   
-2. **`data/raw/papers.json`**:
-   A structured JSON document containing a metadata envelope and the array of normalized paper records.
-   
-   *Example Output Structure:*
-   ```json
-   {
-     "metadata": {
-       "retrieved_at": "2026-06-05T16:04:14.683375Z",
-       "categories": [
-         "cs.AI",
-         "cs.CL"
-       ],
-       "max_results": 100,
-       "total_papers": 100
-     },
-     "papers": [
-       {
-         "paper_id": "2606.06493v1",
-         "arxiv_id": "2606.06493",
-         "version": 1,
-         "title": "HANDOFF: Humanoid Agentic Task-Space Whole-Body Control...",
-         "authors": [
-           "Lizhi Yang",
-           "Junheng Li"
-         ],
-         "abstract": "For a humanoid robot to be deployed in the real world...",
-         "published": "2026-06-04T17:59:50Z",
-         "updated": "2026-06-04T17:59:50Z",
-         "primary_category": "cs.RO",
-         "categories": [
-           "cs.RO",
-           "cs.AI",
-           "cs.LG"
-         ],
-         "arxiv_url": "https://arxiv.org/abs/2606.06493v1",
-         "pdf_url": "https://arxiv.org/pdf/2606.06493v1"
-      }
-     ]
-   }
-   ```
-
----
-
-## Phase 2 — Knowledge Extraction
-
-### Purpose
-The Knowledge Extraction Pipeline processes paper metadata and abstracts from `papers.json` using a two-layer hybrid graph construction paradigm. It resolves deterministic relationships automatically and queries the Groq API for scientific entity relationships, generating unified datasets ready for Neo4j.
-
-### Two-Layer Architecture
-
-1. **Layer 1: Deterministic Graph Construction**
-   - Constructed directly from metadata in `papers.json`.
-   - Generates `Paper`, `Author`, and `Category` entities automatically.
-   - Automatically maps `(Author)-[:WRITES]->(Paper)` and `(Paper)-[:BELONGS_TO]->(Category)` relationships.
-   - No LLM execution or API tokens are used for this layer.
-
-2. **Layer 2: Groq Knowledge Extraction**
-   - Uses `qwen/qwen3-32b` (with fallback to `llama-3.3-70b-versatile`) with structured JSON schema constraints.
-   - Extracts key entities matching allowed types: `Method`, `Concept`, `Dataset`, `Metric`, `Task`, `Organization`.
-   - Extracts semantic relationships matching allowed types: `USES`, `BASED_ON`, `EXTENDS`, `INTRODUCES`, `EVALUATED_ON`, `DEVELOPED_BY`, `SOLVES`, `OUTPERFORMS`, `COMPARED_WITH`.
-   - Automatically generates a paper-centric relationship: `(Paper)-[:MENTIONS]->(Entity)` for all extracted entities.
-   - Conditionally generates a paper-centric relationship: `(Paper)-[:INTRODUCES]->(Method)` only when the method name matches the paper's title or acronym to avoid false positives.
-
-### Taxonomy and Schemas
-
-#### Allowed Entity Types
-- `Paper` (deterministic)
-- `Author` (deterministic)
-- `Category` (deterministic)
-- `Method`
-- `Concept`
-- `Dataset`
-- `Metric`
-- `Task`
-- `Organization`
-
-#### Allowed Relationship Types
-- `WRITES` (deterministic)
-- `BELONGS_TO` (deterministic)
-- `MENTIONS` (paper-centric entity extraction)
-- `INTRODUCES` (conditional paper-centric method extraction)
-- `USES`
-- `BASED_ON`
-- `EXTENDS`
-- `EVALUATED_ON`
-- `DEVELOPED_BY`
-- `SOLVES`
-- `OUTPERFORMS`
-- `COMPARED_WITH`
-
----
-
-### Running Extraction
-To run the knowledge extraction:
-1. Ensure your `GROQ_API_KEY` is set in the `.env` file.
-2. Execute the extraction script:
+3. **Install Dependencies**:
    ```bash
-   uv run python -m src.extract_knowledge
+   uv pip install -e .
    ```
 
-### Output Formats
+4. **Run Ingestion & Rebuild Pipeline**:
+   To ingest foundational papers, rebuild vector stores, and upload graph nodes to Neo4j:
+   ```bash
+   uv run python scripts/download_foundational.py
+   ```
 
-All outputs are saved to the `data/processed/` directory:
-1. **`entities.json`**: Unified deduplicated entity cache. Merged on normalized name and entity type, retaining the longest description and union of source papers.
-2. **`relationships.json`**: Unified deduplicated relationship list connecting entities via their primary key `entity_id`.
-3. **`graph_data.json`**: Global payload containing extraction run metadata statistics and the consolidated graph elements.
-4. **`failed_extractions.json`**: Log of errors and paper IDs for failed API calls, enabling easy diagnostic reviews.
+5. **Generate Graph Analytics & UI Cache**:
+   ```bash
+   uv run python scripts/generate_graph_stats.py
+   uv run python scripts/prepare_ui_cache.py
+   ```
+
+6. **Start Streamlit Dashboard**:
+   ```bash
+   uv run streamlit run streamlit/Home.py
+   ```
 
 ---
 
-## Usage Instructions
+## Running in Docker
 
-To run the complete unit test suite:
+You can run both Neo4j and the Streamlit dashboard together using Docker Compose.
+
+1. **Build and Start Containers**:
+   ```bash
+   docker-compose up --build
+   ```
+
+2. **Access Streamlit Dashboard**:
+   Open your browser to `http://localhost:8501`.
+
+3. **Access Neo4j Console**:
+   Open your browser to `http://localhost:7474` (Credentials: `neo4j/neo4j_password_123`).
+
+---
+
+## Running Verification & Testing
+
+To run the full suite of 88 unit tests locally:
 ```bash
 uv run python -m pytest
 ```
 
-To run the paper ingestion pipeline (Phase 1):
-```bash
-uv run python -m src.fetch_papers
-```
-
-To run the knowledge extraction pipeline (Phase 2):
-```bash
-uv run python -m src.extract_knowledge
-```
-
 ---
 
-## Future Improvements
+## Screenshots
 
-*(To be populated in future stages)*
+*Screenshots demonstrating the Streamlit user interface will be displayed here.*
+
+---

@@ -70,3 +70,8 @@ data/evaluation/embedding_cache.sqlite
 
 # Scratch files
 scratch_prefix.py
+
+# Additional ignored data directories
+data/foundational/
+data/temp_uploads/
+data/ui_cache/

@@ -116,15 +116,8 @@ class Neo4jLoader:
                     logger.error(f"Error creating index {index_name}: {e}")
                     raise
 
-    def load_nodes(self, entities_path: str, batch_size: int = 500) -> Dict[str, Any]:
-        """Loads entities from entities.json in transaction-committed batches."""
-        logger.info(f"Loading entities from {entities_path}...")
-        if not os.path.exists(entities_path):
-            raise FileNotFoundError(f"Entities file not found: {entities_path}")
-
-        with open(entities_path, "r", encoding="utf-8") as f:
-            entities = json.load(f)
-
+    def load_entities(self, entities: List[Dict[str, Any]], batch_size: int = 500) -> Dict[str, Any]:
+        """Loads entities from a list in transaction-committed batches."""
         nodes_processed = 0
         node_batches = 0
         label_counts = defaultdict(int)
@@ -169,14 +162,32 @@ class Neo4jLoader:
             "label_counts": label_counts
         }
 
-    def load_relationships(self, relationships_path: str, batch_size: int = 500) -> Dict[str, Any]:
-        """Loads relationships from relationships.json in transaction-committed batches."""
-        logger.info(f"Loading relationships from {relationships_path}...")
-        if not os.path.exists(relationships_path):
-            raise FileNotFoundError(f"Relationships file not found: {relationships_path}")
+    def load_nodes(self, entities_path: str, batch_size: int = 500) -> Dict[str, Any]:
+        """Loads entities from entities.json in transaction-committed batches."""
+        logger.info(f"Loading entities from {entities_path}...")
+        if not os.path.exists(entities_path):
+            raise FileNotFoundError(f"Entities file not found: {entities_path}")
 
-        # Derive entities path to resolve labels
-        entities_path = os.path.join(os.path.dirname(relationships_path), "entities.json")
+        with open(entities_path, "r", encoding="utf-8") as f:
+            entities = json.load(f)
+
+        return self.load_entities(entities, batch_size=batch_size)
+
+    def load_relationships(self, relationships: Any, batch_size: int = 500) -> Dict[str, Any]:
+        """Loads relationships from a JSON file path or a list of dictionaries in transaction-committed batches."""
+        if isinstance(relationships, str):
+            relationships_path = relationships
+            logger.info(f"Loading relationships from {relationships_path}...")
+            if not os.path.exists(relationships_path):
+                raise FileNotFoundError(f"Relationships file not found: {relationships_path}")
+            with open(relationships_path, "r", encoding="utf-8") as f:
+                relationships_list = json.load(f)
+            # Derive entities path to resolve labels
+            entities_path = os.path.join(os.path.dirname(relationships_path), "entities.json")
+        else:
+            relationships_list = relationships
+            entities_path = "data/processed/entities.json"
+
         entity_type_map = defaultdict(list)
         if os.path.exists(entities_path):
             with open(entities_path, "r", encoding="utf-8") as f:
@@ -203,14 +214,11 @@ class Neo4jLoader:
                     return cand["type"]
             return candidates[0]["type"]
 
-        with open(relationships_path, "r", encoding="utf-8") as f:
-            relationships = json.load(f)
-
         relationships_processed = 0
         relationship_batches = 0
         
-        for i in range(0, len(relationships), batch_size):
-            batch = relationships[i:i + batch_size]
+        for i in range(0, len(relationships_list), batch_size):
+            batch = relationships_list[i:i + batch_size]
             relationship_batches += 1
             
             with self.driver.session() as session:
@@ -248,7 +256,7 @@ class Neo4jLoader:
                         relationships_processed += 1
                     tx.commit()
             
-            logger.info(f"Processed relationships: {relationships_processed} / {len(relationships)}")
+            logger.info(f"Processed relationships: {relationships_processed} / {len(relationships_list)}")
 
         return {
             "relationships_processed": relationships_processed,

@@ -36,9 +36,9 @@ class VectorRetriever:
             )
             
         # Load embedding model
-        logger.info(f"Loading SentenceTransformer model: {self.model_name}...")
+        from src.llm import get_embedding_model
         from src.evaluation.embedding_cache import CachedEmbeddingModel
-        base_model = SentenceTransformer(self.model_name)
+        base_model = get_embedding_model(self.model_name)
         self.model = CachedEmbeddingModel(base_model, model_name=self.model_name)
         
         # Load FAISS index

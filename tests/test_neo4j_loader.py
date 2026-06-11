@@ -200,3 +200,54 @@ def test_create_indexes():
     called_queries = [call[0][0] for call in mock_session.run.call_args_list]
     for label in ["Paper", "Method", "Concept", "Dataset"]:
         assert any(f"CREATE INDEX {label.lower()}_name_index" in q for q in called_queries)
+
+def test_load_entities_list():
+    """Verify that load_entities accepts direct lists and merges nodes correctly."""
+    entities_data = [
+        {
+            "entity_id": "paper1",
+            "name": "Title One",
+            "entity_type": "Paper",
+            "confidence": 1.0
+        }
+    ]
+    loader = Neo4jLoader()
+    mock_driver = MagicMock()
+    loader.driver = mock_driver
+    
+    mock_session = MagicMock()
+    mock_tx = MagicMock()
+    mock_driver.session.return_value.__enter__.return_value = mock_session
+    mock_session.begin_transaction.return_value.__enter__.return_value = mock_tx
+    
+    stats = loader.load_entities(entities_data)
+    assert stats["nodes_processed"] == 1
+    assert stats["node_batches"] == 1
+    assert stats["label_counts"]["Paper"] == 1
+    assert mock_tx.commit.call_count == 1
+    assert mock_tx.run.call_count == 1
+
+def test_load_relationships_list():
+    """Verify that load_relationships accepts direct lists and merges relationships correctly."""
+    relationships_data = [
+        {
+            "source": "paper1",
+            "target": "author1",
+            "relation": "DEVELOPED_BY",
+            "confidence": 0.98
+        }
+    ]
+    loader = Neo4jLoader()
+    mock_driver = MagicMock()
+    loader.driver = mock_driver
+    
+    mock_session = MagicMock()
+    mock_tx = MagicMock()
+    mock_driver.session.return_value.__enter__.return_value = mock_session
+    mock_session.begin_transaction.return_value.__enter__.return_value = mock_tx
+    
+    stats = loader.load_relationships(relationships_data)
+    assert stats["relationships_processed"] == 1
+    assert stats["relationship_batches"] == 1
+    assert mock_tx.commit.call_count == 1
+    assert mock_tx.run.call_count == 1

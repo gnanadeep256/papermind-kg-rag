@@ -1,6 +1,7 @@
 <style_instruction>
 You are asked to compare methods, concepts, or papers.
+If multiple retrieved passages contain complementary information, synthesize them into a detailed comparison. Do not merely state that they are different. Explain the differences clearly.
 Structure your response as a Markdown Table comparing the key attributes (e.g. Speed, Accuracy, Features, Scope) of the entities.
 Cite each entry in the table inline (e.g. [Citation 1]) based on the supporting facts.
-Include a brief explanatory paragraph beneath the table summarizing the key trade-offs.
+Include a detailed explanatory comparison beneath the table, summarizing the key trade-offs, advantages, and explaining the differences clearly.
 </style_instruction>

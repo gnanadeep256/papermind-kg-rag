@@ -19,8 +19,8 @@ class GenerationEvaluator(BaseEvaluator):
 
     def _get_model(self) -> Any:
         if self._model is None:
-            from sentence_transformers import SentenceTransformer
-            self._model = SentenceTransformer("BAAI/bge-small-en-v1.5")
+            from src.llm import get_embedding_model
+            self._model = get_embedding_model("BAAI/bge-small-en-v1.5")
         return self._model
 
     def _query_llm(self, prompt: str, system_instruction: str) -> str:
@@ -47,8 +47,8 @@ class GenerationEvaluator(BaseEvaluator):
         groq_key = os.getenv("GROQ_API_KEY")
         if groq_key:
             try:
-                from groq import Groq
-                client = Groq(api_key=groq_key)
+                from src.llm import get_groq_client
+                client = get_groq_client()
                 messages = []
                 if system_instruction:
                     messages.append({"role": "system", "content": system_instruction})

@@ -9,14 +9,15 @@ class ConfidenceEstimator:
     def __init__(self, min_confidence_threshold: float = 0.45, weights: Dict[str, float] = None) -> None:
         self.min_confidence_threshold = min_confidence_threshold
         self.weights = dict(weights) if weights else {
-            "semantic": 0.45,
+            "semantic": 0.30,
             "graph": 0.20,
-            "citation_coverage": 0.10,
-            "citation_precision": 0.10,
-            "rerank": 0.15
+            "chunk_agreement": 0.15,
+            "citation": 0.15,
+            "consistency": 0.10,
+            "diversity": 0.10
         }
-        # Backward compatibility for old citation key
-        if "citation" in self.weights:
+        # Backward compatibility for old citation key in 5-factor model
+        if "citation" in self.weights and "chunk_agreement" not in self.weights:
             val = self.weights.pop("citation")
             self.weights["citation_coverage"] = val / 2.0
             self.weights["citation_precision"] = val / 2.0
@@ -25,10 +26,12 @@ class ConfidenceEstimator:
         self,
         retrieval_result: RetrievalResult,
         used_citations: List[Citation],
-        citation_precision: float = 1.0
+        citation_precision: float = 1.0,
+        chunk_agreement: float = 1.0,
+        generation_consistency: float = 1.0
     ) -> Tuple[float, float, Dict[str, Any]]:
         """
-        Estimates retrieval metrics:
+        Estimates retrieval and generation metrics:
         Returns:
             - confidence: float between 0.0 and 1.0
             - coverage: float between 0.0 and 1.0
@@ -49,8 +52,7 @@ class ConfidenceEstimator:
                 similarities.append(getattr(c, "similarity_score", 0.0))
         semantic_score = sum(similarities) / len(similarities) if similarities else 0.0
         
-        # 2. Graph Connectivity
-        # Graph connectivity = reachable entities / matched entities in query
+        # 2. Graph Connectivity (Retrieval Coverage)
         query_entity_ids = metadata.get("query_entities", [])
         if not query_entity_ids:
             graph_connectivity = 1.0
@@ -83,33 +85,54 @@ class ConfidenceEstimator:
                 reranker_scores.append(val)
         avg_reranker_score = sum(reranker_scores) / len(reranker_scores) if reranker_scores else 0.0
         
-        # Weighted Confidence Score Calculation
-        w = self.weights
-        confidence = (
-            w.get("semantic", 0.45) * semantic_score +
-            w.get("graph", 0.20) * graph_connectivity +
-            w.get("citation_coverage", 0.10) * citation_coverage +
-            w.get("citation_precision", 0.10) * citation_precision +
-            w.get("rerank", 0.15) * avg_reranker_score
-        )
+        # 5. Diversity (1.0 - chunk agreement)
+        diversity = 1.0 - chunk_agreement
+        
+        # Select confidence calculation formula
+        if "chunk_agreement" in self.weights or "consistency" in self.weights or "diversity" in self.weights:
+            confidence = (
+                self.weights.get("semantic", 0.30) * semantic_score +
+                self.weights.get("graph", 0.20) * graph_connectivity +
+                self.weights.get("chunk_agreement", 0.15) * chunk_agreement +
+                self.weights.get("citation", 0.15) * citation_precision +
+                self.weights.get("consistency", 0.10) * generation_consistency +
+                self.weights.get("diversity", 0.10) * diversity
+            )
+        else:
+            confidence = (
+                self.weights.get("semantic", 0.45) * semantic_score +
+                self.weights.get("graph", 0.20) * graph_connectivity +
+                self.weights.get("citation_coverage", 0.10) * citation_coverage +
+                self.weights.get("citation_precision", 0.10) * citation_precision +
+                self.weights.get("rerank", 0.15) * avg_reranker_score
+            )
         
         confidence_breakdown = {
             "semantic": float(semantic_score),
             "graph": float(graph_connectivity),
+            "chunk_agreement": float(chunk_agreement),
+            "citation": float(citation_precision),
             "citation_coverage": float(citation_coverage),
             "citation_precision": float(citation_precision),
+            "generation_consistency": float(generation_consistency),
+            "diversity": float(diversity),
             "reranker": float(avg_reranker_score),
             "final": float(confidence)
         }
         
         details = {
             "avg_similarity": float(semantic_score),
+            "raw_retrieval_confidence": float(semantic_score),
             "graph_connectivity": float(graph_connectivity),
-            "citation_density": float(citation_coverage), # Keep old key for backward compatibility
+            "chunk_agreement": float(chunk_agreement),
+            "citation_density": float(citation_coverage),
             "citation_coverage": float(citation_coverage),
             "citation_precision": float(citation_precision),
+            "generation_consistency": float(generation_consistency),
+            "diversity": float(diversity),
             "reranker_score": float(avg_reranker_score),
             "coverage": float(coverage),
+            "confidence": float(confidence),
             "confidence_breakdown": confidence_breakdown
         }
         

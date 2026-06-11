@@ -1,9 +1,13 @@
 import os
 import json
+import time
 from collections import Counter, defaultdict
+import networkx as nx
 
 def main():
     graph_path = "data/processed/graph_data.json"
+    stats_out_path = "data/processed/graph_stats.json"
+    
     if not os.path.exists(graph_path):
         print(f"Error: {graph_path} not found. Please run the extraction pipeline first.")
         return
@@ -35,52 +39,162 @@ def main():
     # 2. Relationship Type Counts
     relation_counts = Counter(r.get("relation") for r in relationships)
     print("RELATIONSHIP COUNTS BY TYPE:")
-    all_relations = sorted(list(relation_counts.keys()))
-    for rel in all_relations:
+    for rel in sorted(list(relation_counts.keys())):
         print(f"  - {rel:<15}: {relation_counts.get(rel, 0)}")
     print(f"  * Total Edges     : {len(relationships)}")
     print("----------------------------------------------------")
 
-    # 3. Density & Connectivity Averages
-    papers_processed = metadata.get("papers_processed", 0)
-    if papers_processed > 0:
-        avg_entities = len(entities) / papers_processed
-        avg_relationships = len(relationships) / papers_processed
-        print(f"AVERAGE GRAPH DENSITY PER PAPER:")
-        print(f"  - Avg Entities / Paper     : {avg_entities:.2f}")
-        print(f"  - Avg Relationships / Paper: {avg_relationships:.2f}")
-    print("----------------------------------------------------")
+    # Construct NetworkX Graphs
+    print("Building NetworkX Graphs...")
+    G_directed = nx.DiGraph()
+    G_undirected = nx.Graph()
 
-    # 4. Top 20 Connected Nodes (In/Out/Total Degree Centrality)
-    in_degree = Counter()
-    out_degree = Counter()
-    degree_counts = Counter()
+    # Map entity ID to details
+    id_to_name = {}
+    id_to_type = {}
+    id_to_desc = {}
+    for e in entities:
+        eid = e.get("entity_id")
+        id_to_name[eid] = e.get("name")
+        id_to_type[eid] = e.get("entity_type")
+        id_to_desc[eid] = e.get("description", "")
+        
+        G_directed.add_node(eid, type=e.get("entity_type"), name=e.get("name"))
+        G_undirected.add_node(eid, type=e.get("entity_type"), name=e.get("name"))
+
+    for r in relationships:
+        src = r.get("source")
+        tgt = r.get("target")
+        rel_type = r.get("relation")
+        
+        G_directed.add_edge(src, tgt, type=rel_type)
+        G_undirected.add_edge(src, tgt, type=rel_type)
+
+    total_nodes = G_directed.number_of_nodes()
+    total_edges = G_directed.number_of_edges()
+
+    print(f"NetworkX Graph: {total_nodes} nodes, {total_edges} edges.")
+
+    # Calculate Centralities
+    print("Computing NetworkX graph analytics metrics...")
+    pagerank_scores = {}
+    betweenness_scores = {}
+    closeness_scores = {}
+    degree_scores = {}
+
+    if total_nodes > 0:
+        try:
+            pagerank_scores = nx.pagerank(G_directed, alpha=0.85)
+        except Exception as e:
+            print(f"  Warning: PageRank computation failed: {e}")
+            pagerank_scores = {n: 0.0 for n in G_directed.nodes()}
+
+        try:
+            betweenness_scores = nx.betweenness_centrality(G_undirected)
+        except Exception as e:
+            print(f"  Warning: Betweenness Centrality failed: {e}")
+            betweenness_scores = {n: 0.0 for n in G_undirected.nodes()}
+
+        try:
+            closeness_scores = nx.closeness_centrality(G_directed)
+        except Exception as e:
+            print(f"  Warning: Closeness Centrality failed: {e}")
+            closeness_scores = {n: 0.0 for n in G_directed.nodes()}
+
+        try:
+            degree_scores = nx.degree_centrality(G_undirected)
+        except Exception as e:
+            print(f"  Warning: Degree Centrality failed: {e}")
+            degree_scores = {n: 0.0 for n in G_undirected.nodes()}
+
+    # Connected Components (Undirected)
+    connected_components = []
+    if total_nodes > 0:
+        components = sorted(nx.connected_components(G_undirected), key=len, reverse=True)
+        connected_components = [list(c) for c in components]
+        print(f"Connected Components: {len(components)} components. Largest component size: {len(components[0]) if components else 0}")
     
-    for rel in relationships:
-        source = rel.get("source")
-        target = rel.get("target")
-        out_degree[source] += 1
-        in_degree[target] += 1
-        degree_counts[source] += 1
-        degree_counts[target] += 1
+    # Community Detection (Louvain Modularity)
+    communities = []
+    if total_nodes > 0:
+        try:
+            from networkx.algorithms.community import louvain_communities
+            communities_sets = louvain_communities(G_undirected, seed=42)
+            communities = [list(c) for c in communities_sets]
+            print(f"Louvain Modularity Communities Detected: {len(communities)}")
+        except Exception as e:
+            print(f"  Warning: Louvain community detection failed: {e}. Falling back to Label Propagation.")
+            try:
+                from networkx.algorithms.community import label_propagation_communities
+                communities_sets = label_propagation_communities(G_undirected)
+                communities = [list(c) for c in communities_sets]
+                print(f"Label Propagation Communities Detected: {len(communities)}")
+            except Exception as e2:
+                print(f"  Warning: Community detection failed: {e2}")
 
-    # Map normalized ID back to display name
-    id_to_name = {e.get("entity_id"): e.get("name") for e in entities}
-    id_to_type = {e.get("entity_id"): e.get("entity_type") for e in entities}
+    # Map node stats to lists for serialization
+    node_analytics = []
+    for node_id in G_directed.nodes():
+        node_analytics.append({
+            "entity_id": node_id,
+            "name": id_to_name.get(node_id, node_id),
+            "entity_type": id_to_type.get(node_id, "Unknown"),
+            "description": id_to_desc.get(node_id, ""),
+            "pagerank": pagerank_scores.get(node_id, 0.0),
+            "betweenness": betweenness_scores.get(node_id, 0.0),
+            "closeness": closeness_scores.get(node_id, 0.0),
+            "degree_centrality": degree_scores.get(node_id, 0.0),
+            "raw_degree": G_undirected.degree(node_id)
+        })
 
-    print("TOP 20 MOST CONNECTED NODES:")
-    top_nodes = degree_counts.most_common(20)
-    print(f"  {'Rank':<5} | {'Node Name':<35} | {'Type':<12} | {'In':<4} | {'Out':<4} | {'Total':<5}")
-    print("  " + "-" * 75)
-    for rank, (node_id, degree) in enumerate(top_nodes, 1):
-        name = id_to_name.get(node_id, node_id)
-        ntype = id_to_type.get(node_id, "Unknown")
-        ind = in_degree.get(node_id, 0)
-        outd = out_degree.get(node_id, 0)
-        # Truncate name if too long
+    # Sort node lists for reports
+    pagerank_sorted = sorted(node_analytics, key=lambda x: x["pagerank"], reverse=True)
+    betweenness_sorted = sorted(node_analytics, key=lambda x: x["betweenness"], reverse=True)
+    degree_sorted = sorted(node_analytics, key=lambda x: x["raw_degree"], reverse=True)
+
+    # Output top PageRank nodes
+    print("\nTOP 20 NODES BY PAGERANK CENTRALITY:")
+    print(f"  {'Rank':<5} | {'Node Name':<35} | {'Type':<12} | {'PageRank':<10}")
+    print("  " + "-" * 70)
+    for rank, node in enumerate(pagerank_sorted[:20], 1):
+        name = node["name"]
         if len(name) > 32:
             name = name[:29] + "..."
-        print(f"  {rank:<5} | {name:<35} | {ntype:<12} | {ind:<4} | {outd:<4} | {degree:<5}")
+        print(f"  {rank:<5} | {name:<35} | {node['entity_type']:<12} | {node['pagerank']:.5f}")
+
+    # Output top Betweenness nodes
+    print("\nTOP 20 NODES BY BETWEENNESS CENTRALITY:")
+    print(f"  {'Rank':<5} | {'Node Name':<35} | {'Type':<12} | {'Betweenness':<10}")
+    print("  " + "-" * 72)
+    for rank, node in enumerate(betweenness_sorted[:20], 1):
+        name = node["name"]
+        if len(name) > 32:
+            name = name[:29] + "..."
+        print(f"  {rank:<5} | {name:<35} | {node['entity_type']:<12} | {node['betweenness']:.5f}")
+
+    # Serialize analytics payload
+    stats_payload = {
+        "metadata": {
+            "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "total_nodes": total_nodes,
+            "total_edges": total_edges,
+            "density": nx.density(G_undirected) if total_nodes > 0 else 0.0,
+            "average_degree": sum(dict(G_undirected.degree()).values()) / total_nodes if total_nodes > 0 else 0.0,
+            "connected_components_count": len(connected_components),
+            "largest_component_size": len(connected_components[0]) if connected_components else 0,
+            "communities_count": len(communities)
+        },
+        "node_metrics": node_analytics,
+        "connected_components": connected_components,
+        "communities": communities
+    }
+
+    # Save graph stats
+    print(f"Saving precomputed graph statistics to {stats_out_path}...")
+    with open(stats_out_path, "w", encoding="utf-8") as f:
+        json.dump(stats_payload, f, indent=2)
+        
+    print("Graph analytics precomputation completed successfully.")
     print("====================================================")
 
 if __name__ == "__main__":

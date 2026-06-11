@@ -113,18 +113,17 @@ def test_citation_validator_semantic_alignment():
     # Make sentence and paragraph embeddings match perfectly or mismatch
     def mock_encode(texts, **kwargs):
         print(f"MOCK ENCODE CALLED with texts: {texts}")
-        if "sentence" in texts[0]:
-            print("MATCHED sentence")
-            return [np.array([1.0, 0.0])] # Sentence vector
-        elif "matched paragraph" in texts[0]:
-            print("MATCHED matched paragraph")
-            return [np.array([1.0, 0.0])] # Paragraph vector (similarity = 1.0)
-        elif "warning paragraph" in texts[0]:
-            print("MATCHED warning paragraph")
-            return [np.array([0.6, 0.8])] # Paragraph vector (similarity = 0.60, triggers warning)
-        else:
-            print("MATCHED else block")
-            return [np.array([0.0, 1.0])] # Paragraph vector (similarity = 0.0, rejected)
+        results = []
+        for text in texts:
+            if "sentence" in text:
+                results.append(np.array([1.0, 0.0]))
+            elif "matched paragraph" in text:
+                results.append(np.array([1.0, 0.0]))
+            elif "warning paragraph" in text:
+                results.append(np.array([0.6, 0.8]))
+            else:
+                results.append(np.array([0.0, 1.0]))
+        return results
 
             
     mock_model.encode.side_effect = mock_encode

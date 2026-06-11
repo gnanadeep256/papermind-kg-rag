@@ -7,39 +7,28 @@ from typing import Dict, Any, List, Optional
 from loguru import logger
 from pydantic import BaseModel
 
-from src.hybrid_retriever import HybridRetriever, Citation, RetrievalResult
+from src.hybrid_retriever import HybridRetriever
+from src.retriever import BaseRetriever, Citation, RetrievalResult
 from src.observability.trace_models import TraceContext
 from src.question_classifier import QuestionClassifier
 from src.context_builder import ContextBuilder
 from src.context_compressor import ContextCompressor
 from src.citation_validator import CitationValidator
 from src.confidence_estimator import ConfidenceEstimator
-
-class EvaluationContext(BaseModel):
-    vector_context: List[Any]
-    graph_context: Dict[str, Any]
-    retrieval_metadata: Dict[str, Any]
-
-class GenerationResult(BaseModel):
-    query: str
-    answer: str
-    citations: List[Citation]
-    confidence: float
-    provenance: Dict[str, Any]
-    metadata: Dict[str, Any]
-    evaluation_context: Optional[EvaluationContext] = None
+from src.generator import BaseGenerator, EvaluationContext, GenerationResult
 
 
-class GroundedAnswerGenerator:
+class GroundedAnswerGenerator(BaseGenerator):
     """
     Orchestrates the modular answer generation pipeline:
     Query -> Classifier -> Retriever -> ContextBuilder -> Compressor -> LLM -> Validator -> Confidence -> Result.
     """
-    def __init__(self, retriever: HybridRetriever) -> None:
+    def __init__(self, retriever: BaseRetriever) -> None:
         self.retriever = retriever
         self.classifier = QuestionClassifier()
         self.context_builder = ContextBuilder()
         self.context_compressor = ContextCompressor()
+        self._answer_cache = {}
         
         # Load config parameters
         self.config = self.retriever.config
@@ -65,22 +54,69 @@ class GroundedAnswerGenerator:
             replace_invalid=replace_inv
         )
         
-        # Dynamic weights
-        self.weights = self.gen_config.get("weights", {
-            "semantic": 0.45,
+        # 6-Factor Confidence Weights
+        self.weights = {
+            "semantic": 0.30,
             "graph": 0.20,
-            "citation": 0.20,
-            "rerank": 0.15
-        })
+            "chunk_agreement": 0.15,
+            "citation": 0.15,
+            "consistency": 0.10,
+            "diversity": 0.10
+        }
         self.confidence_estimator = ConfidenceEstimator(self.min_confidence_threshold, weights=self.weights)
         
         self.debug_mode = self.gen_config.get("debug_mode", True)
         self.semantic_drift_threshold = self.gen_config.get("semantic_drift_threshold", 0.55)
 
-    def generate_answer(self, query: str, trace_context: Optional[TraceContext] = None) -> GenerationResult:
+    def _summarize_older_history(self, history: List[Dict[str, Any]]) -> str:
+        """Summarizes older conversation turns using a cheaper LLM model to conserve API costs."""
+        if len(history) <= 4:
+            return ""
+        
+        # Extract turns before the last 4
+        older_turns = history[:-4]
+        history_text = "\n".join(f"{t['role'].capitalize()}: {t['content']}" for t in older_turns)
+        
+        prompt = f"""
+        Summarize the following ongoing research conversation history in a single, dense academic paragraph.
+        Focus on the main research questions asked and key findings/resolutions.
+        
+        Conversation History:
+        {history_text}
+        
+        Summary:
+        """
+        
+        cheap_model = "llama-3.1-8b-instant"  # Cheap Groq model
+        try:
+            logger.info(f"Summarizing conversation history using cheaper model: {cheap_model}")
+            # Query Groq API directly using get_groq_client (cached in streamlit, or standard in CLI)
+            from src.llm import query_groq_api
+            summary, _, _ = query_groq_api(prompt, "You are a scientific conversation summarizer.", cheap_model)
+            return summary.strip()
+        except Exception as e:
+            logger.warning(f"Failed to summarize history using cheap model: {e}. Trying Gemini-Flash fallback.")
+            try:
+                from src.llm import query_gemini_api
+                summary, _, _ = query_gemini_api(prompt, "You are a scientific conversation summarizer.", "gemini-2.5-flash")
+                return summary.strip()
+            except Exception as fe:
+                logger.error(f"Fallback summarizer failed: {fe}")
+                return "Prior conversation focused on paper overview and key methodology details."
+
+    def generate_answer(self, query: str, conversation_history: Optional[List[Dict[str, Any]]] = None, trace_context: Optional[TraceContext] = None) -> GenerationResult:
         """
         Executes the full grounded generation pipeline for a user question.
         """
+        # Answer Cache Check
+        cache_key = f"{query}_hist_{len(conversation_history) if conversation_history else 0}"
+        now = time.time()
+        if cache_key in self._answer_cache:
+            ts, cached_res = self._answer_cache[cache_key]
+            if now - ts < 600:  # 10 minutes TTL
+                logger.info(f"Answer cache hit for query: '{query}'")
+                return cached_res
+
         start_time = time.time()
         obs_cfg = self.config.get("observability", {})
         obs_enabled = obs_cfg.get("enabled", False)
@@ -104,15 +140,53 @@ class GroundedAnswerGenerator:
         logger.info(f"Query classified as: {category}")
         intent_time = (time.time() - intent_start) * 1000
         
-        # 2. Hybrid Retrieval
+        # 2. Hybrid Retrieval (pass category for token budget)
         retrieval_start = time.time()
-        retrieval_result = self.retriever.retrieve(query)
+        retrieval_result = self.retriever.retrieve(query, category=category)
         retrieval_time_ms = (time.time() - retrieval_start) * 1000
         
-        # 3. Context Building
+        # 3. Context Building & Evidence Scoring/Ranking
         # Convert graph nodes and relationships to natural facts
         context_start = time.time()
         graph_facts = self.context_builder.build_graph_facts(retrieval_result.graph_context)
+
+        # Helper functions to score chunks
+        def get_sec_importance(section: str) -> float:
+            s = section.lower()
+            if "intro" in s: return 0.8
+            if "method" in s or "model" in s or "approach" in s: return 1.0
+            if "experiment" in s or "eval" in s or "result" in s: return 0.7
+            if "conclusion" in s or "future" in s or "limit" in s: return 0.9
+            return 0.5
+
+        def get_recency(arxiv_id: str) -> float:
+            match = re.match(r"^(\d{2})(\d{2})", re.sub(r"\D", "", arxiv_id))
+            if match:
+                year = int(match.group(1))
+                return min(1.0, max(0.0, (year - 10) / 16.0))
+            return 0.5
+
+        # Score and Rank Evidence chunks descending
+        scored_chunks = []
+        for chunk in retrieval_result.vector_context:
+            c_sec = getattr(chunk, "section", "Unknown")
+            c_arxiv = getattr(chunk, "arxiv_id", "")
+            similarity = getattr(chunk, "similarity_score", 0.0)
+            graph_bonus = getattr(chunk, "graph_bonus", 0.0)
+            reranker = getattr(chunk, "reranker_score", None)
+            if reranker is None:
+                reranker = similarity
+                
+            sec_imp = get_sec_importance(c_sec)
+            rec = get_recency(c_arxiv)
+            
+            score = 0.40 * similarity + 0.20 * graph_bonus + 0.20 * reranker + 0.10 * sec_imp + 0.10 * rec
+            scored_chunks.append((score, chunk))
+            
+        scored_chunks.sort(key=lambda x: x[0], reverse=True)
+        retrieval_result = retrieval_result.model_copy(update={
+            "vector_context": [item[1] for item in scored_chunks]
+        })
         
         # Convert vector chunks to Supporting Passage blocks
         supporting_passages = self.context_builder.build_supporting_passages(retrieval_result.vector_context)
@@ -139,17 +213,46 @@ class GroundedAnswerGenerator:
             citations_list.append(f"{p['citation_label']}: {orig_title} (arXiv: {orig_arxiv_id}), Section: {orig_section}, Pages: {orig_page_start}-{orig_page_end}")
         citations_str = "\n".join(citations_list) if citations_list else "No citations available."
         
+        # Better Context Packing
+        paper_meta_list = []
+        for paper in retrieval_result.source_papers:
+            paper_meta_list.append(f"- Title: {paper.get('title')} (arXiv: {paper.get('arxiv_id')})")
+        paper_meta_str = "\n".join(paper_meta_list) if paper_meta_list else "No papers metadata available."
+        
+        # Conversation Summary Memory Compression
+        conv_summary = ""
+        recent_history_str = "No prior conversation history."
+        if conversation_history:
+            if len(conversation_history) > 4:
+                conv_summary = self._summarize_older_history(conversation_history)
+            
+            recent_turns = conversation_history[-4:]
+            recent_history_list = []
+            for turn in recent_turns:
+                role_label = "User" if turn["role"] == "user" else "Assistant"
+                recent_history_list.append(f"{role_label}: {turn['content']}")
+            recent_history_str = "\n".join(recent_history_list)
+            
         prompt = (
             f"<intent_routing>\n"
             f"Query Category: {category.upper()}\n"
             f"Intent: {retrieval_result.retrieval_metadata.get('intent', 'unknown').upper()}\n"
             f"</intent_routing>\n\n"
+            f"<paper_metadata>\n"
+            f"{paper_meta_str}\n"
+            f"</paper_metadata>\n\n"
+            f"<conversation_summary>\n"
+            f"{conv_summary if conv_summary else 'No summary available.'}\n"
+            f"</conversation_summary>\n\n"
+            f"<recent_history>\n"
+            f"{recent_history_str}\n"
+            f"</recent_history>\n\n"
+            f"<retrieved_evidence>\n"
+            f"{passages_str}\n"
+            f"</retrieved_evidence>\n\n"
             f"<graph_facts>\n"
             f"{facts_str}\n"
             f"</graph_facts>\n\n"
-            f"<vector_context>\n"
-            f"{passages_str}\n"
-            f"</vector_context>\n\n"
             f"<citations>\n"
             f"{citations_str}\n"
             f"</citations>\n\n"
@@ -164,7 +267,7 @@ class GroundedAnswerGenerator:
         
         system_instruction = self._load_system_prompt()
         
-        # 6. LLM Generation with Fallback handler
+        # 6. LLM Generation with Fallback handler chain
         generation_start = time.time()
         answer = ""
         provider_attempted = self.provider
@@ -172,38 +275,58 @@ class GroundedAnswerGenerator:
         fallback_used = False
         fallback_reason = None
         retry_count = 0
-        generation_model = self.primary_model if self.provider == "gemini" else self.fallback_model
+        generation_model = self.primary_model
         
         prompt_tokens_act = None
         completion_tokens_act = None
         
-        try:
-            if self.provider == "gemini":
-                logger.info(f"Querying primary generator Gemini ({self.primary_model})...")
-                answer, prompt_tokens_act, completion_tokens_act = self._query_gemini_api(prompt, system_instruction, self.primary_model)
-                generation_model = self.primary_model
-            elif self.provider == "groq":
-                logger.info(f"Querying primary generator Groq ({self.fallback_model})...")
-                answer, prompt_tokens_act, completion_tokens_act = self._query_groq_api(prompt, system_instruction, self.fallback_model)
-                generation_model = self.fallback_model
+        groq_key = os.getenv("GROQ_API_KEY")
+        gemini_key = os.getenv("GEMINI_API_KEY")
+        
+        fallback_chain = []
+        if self.provider == "groq" and groq_key:
+            fallback_chain.append(("groq", self.fallback_model))
+        if gemini_key:
+            fallback_chain.append(("gemini", self.primary_model))
+            fallback_chain.append(("gemini", self.deep_model))
+        if groq_key:
+            if self.provider != "groq":
+                fallback_chain.append(("groq", self.fallback_model))
+            # Append lightweight model as ultimate backup for large prompts/rate-limiting
+            fallback_chain.append(("groq", "llama-3.1-8b-instant"))
+            
+        success = False
+        fallback_errors = []
+        
+        for prov, model in fallback_chain:
+            try:
+                logger.info(f"Querying LLM via {prov} ({model})...")
+                if prov == "gemini":
+                    answer, prompt_tokens_act, completion_tokens_act = self._query_gemini_api(prompt, system_instruction, model)
+                elif prov == "groq":
+                    answer, prompt_tokens_act, completion_tokens_act = self._query_groq_api(prompt, system_instruction, model)
+                provider_used = prov
+                generation_model = model
+                success = True
+                break
+            except Exception as e:
+                logger.warning(f"API call failed for {prov} ({model}): {e}")
+                fallback_errors.append(f"{prov}/{model}: {str(e)}")
+                fallback_used = True
+                fallback_reason = str(e)
+                retry_count += 1
+                
+        if not success:
+            logger.error("All configured LLM models in fallback chain failed.")
+            if retrieval_result.vector_context:
+                top_text = retrieval_result.vector_context[0].text[:300]
+                answer = f"Local Extractive Fallback: Based on retrieved context, {top_text}... [Citation 1]"
+                provider_used = "local_extractive"
+                generation_model = "extractive_rules"
             else:
-                raise ValueError(f"Unsupported provider: {self.provider}")
-        except Exception as e:
-            logger.warning(f"Primary generator call failed: {e}. Attempting failover fallback...")
-            fallback_used = True
-            fallback_reason = str(e)
-            retry_count = 1
-            if self.provider == "gemini" and self.fallback_provider == "groq":
-                provider_used = "groq"
-                generation_model = self.fallback_model
-                answer, prompt_tokens_act, completion_tokens_act = self._query_groq_api(prompt, system_instruction, self.fallback_model)
-            elif self.provider == "groq" and self.fallback_provider == "gemini":
-                provider_used = "gemini"
-                generation_model = self.primary_model
-                answer, prompt_tokens_act, completion_tokens_act = self._query_gemini_api(prompt, system_instruction, self.primary_model)
-            else:
-                logger.error("No compatible fallback provider configured or fallback failed.")
-                raise e
+                answer = "I do not have sufficient evidence in the retrieved context to answer this query."
+                provider_used = "local_extractive"
+                generation_model = "abstain"
                 
         generation_time_ms = (time.time() - generation_start) * 1000
         
@@ -216,49 +339,45 @@ class GroundedAnswerGenerator:
         )
         citation_time_ms = (time.time() - citation_start) * 1000
         
-        # 8. Confidence & Coverage Estimations
+        # 8. Confidence, Agreement and Diversity Estimations
         confidence_start = time.time()
-        confidence, coverage, details = self.confidence_estimator.estimate(
-            retrieval_result,
-            used_citations,
-            citation_precision=self.citation_validator.citation_precision
-        )
         
-        # 9. Semantic Drift Detection
-        # Strip all citation tags for a clean text drift check
-        clean_answer = re.sub(r"\[Citation\s+\d+\]", "", validated_answer)
-        clean_answer = re.sub(r"\[Invalid\s+Citation\s+Removed\]", "", clean_answer)
-        clean_answer = re.sub(r"\s+", " ", clean_answer).strip()
-        
-        merged_context = "\n\n".join([(c.text if hasattr(c, "text") else c.get("text", "")) for c in retrieval_result.vector_context])
-        # Include graph facts to form a single evidence document
-        graph_facts_text = "\n".join(graph_facts) if graph_facts else ""
-        evidence_document = merged_context
-        if graph_facts_text:
-            evidence_document = evidence_document + "\n\n" + graph_facts_text
-            
-        # Resolve embedding model and capture SQLite cache metrics
-        cache_hits = 0
-        cache_misses = 0
-        cache_lookup_latency = 0.0
-        cache_insert_latency = 0.0
-        invalidation_strategy = "unknown"
-        
+        # Resolve BGE model to calculate chunk agreement & consistency
         emb_model = None
         if self.citation_validator and self.citation_validator.model:
             emb_model = self.citation_validator.model
         elif self.retriever and hasattr(self.retriever, "vector_retriever") and self.retriever.vector_retriever.model:
             emb_model = self.retriever.vector_retriever.model
             
-        if emb_model and hasattr(emb_model, "hits"):
-            cache_hits = emb_model.hits
-            cache_misses = emb_model.misses
-            cache_lookup_latency = sum(emb_model.lookup_latencies_ms) if emb_model.lookup_latencies_ms else 0.0
-            cache_insert_latency = sum(emb_model.insert_latencies_ms) if emb_model.insert_latencies_ms else 0.0
-            if hasattr(emb_model, "reset_stats"):
-                emb_model.reset_stats()
-            if hasattr(emb_model, "cache"):
-                invalidation_strategy = getattr(emb_model.cache, "invalidation_strategy", "unknown")
+        chunk_agreement = 1.0
+        diversity = 0.0
+        if len(retrieval_result.vector_context) > 1 and emb_model is not None:
+            try:
+                texts = [getattr(c, "text", "") for c in retrieval_result.vector_context]
+                embs = emb_model.encode(texts, normalize_embeddings=True)
+                similarities = []
+                for i in range(len(embs)):
+                    for j in range(i + 1, len(embs)):
+                        sim = float(np.dot(embs[i], embs[j]))
+                        similarities.append(sim)
+                if similarities:
+                    chunk_agreement = sum(similarities) / len(similarities)
+                    diversity = 1.0 - chunk_agreement
+            except Exception as e:
+                logger.error(f"Error computing chunk agreement/diversity: {e}")
+                chunk_agreement = 0.5
+                diversity = 0.5
+                
+        # 9. Semantic Drift / Hallucination Detection
+        clean_answer = re.sub(r"\[Citation\s+\d+\]", "", validated_answer)
+        clean_answer = re.sub(r"\[Invalid\s+Citation\s+Removed\]", "", clean_answer)
+        clean_answer = re.sub(r"\s+", " ", clean_answer).strip()
+        
+        merged_context = "\n\n".join([(c.text if hasattr(c, "text") else c.get("text", "")) for c in retrieval_result.vector_context])
+        graph_facts_text = "\n".join(graph_facts) if graph_facts else ""
+        evidence_document = merged_context
+        if graph_facts_text:
+            evidence_document = evidence_document + "\n\n" + graph_facts_text
             
         drift_score = 1.0
         if emb_model is not None and clean_answer and evidence_document:
@@ -269,6 +388,15 @@ class GroundedAnswerGenerator:
             except Exception as e:
                 logger.error(f"Error during semantic drift check: {e}")
                 
+        # Calculate scores using ConfidenceEstimator (using new 6-factor model)
+        confidence, coverage, details = self.confidence_estimator.estimate(
+            retrieval_result,
+            used_citations,
+            citation_precision=self.citation_validator.citation_precision,
+            chunk_agreement=chunk_agreement,
+            generation_consistency=drift_score
+        )
+        
         # 10. Abstention Guard Evaluation
         should_abstain = self.confidence_estimator.should_abstain(
             retrieval_result,
@@ -276,24 +404,52 @@ class GroundedAnswerGenerator:
             details
         )
         
-        # Force abstention if answer has drifted beyond threshold
-        if drift_score < self.semantic_drift_threshold:
-            logger.warning(f"Semantic drift detected ({drift_score:.2f} < {self.semantic_drift_threshold}). Forcing abstention.")
-            should_abstain = True
-            
-        # Enforce strict insufficiency response if confidence or matching is too low
         abstain_message = "I do not have sufficient evidence in the retrieved context to answer this query."
         is_abstained = False
-        if should_abstain or abstain_message.lower() in validated_answer.lower():
+        abstain_reason = None
+        
+        if should_abstain:
+            is_abstained = True
+            avg_similarity = details.get("avg_similarity", 0.0)
+            if not retrieval_result.vector_context:
+                abstain_reason = "No retrieved context passages available."
+            elif avg_similarity < 0.50:
+                abstain_reason = f"Average similarity ({avg_similarity:.4f}) is below threshold (0.50)."
+            elif confidence < self.min_confidence_threshold:
+                abstain_reason = f"Overall confidence ({confidence:.4f}) is below minimum threshold ({self.min_confidence_threshold:.2f})."
+            else:
+                abstain_reason = "Retrieval constraints triggered abstention."
+        elif drift_score < self.semantic_drift_threshold:
+            logger.warning(f"Semantic drift detected ({drift_score:.2f} < {self.semantic_drift_threshold}). Forcing abstention.")
+            is_abstained = True
+            abstain_reason = f"Answer semantic drift detected (drift score {drift_score:.2f} is below threshold {self.semantic_drift_threshold:.2f})."
+        elif abstain_message.lower() in validated_answer.lower():
+            is_abstained = True
+            abstain_reason = "Model generated insufficiency response."
+            
+        if is_abstained:
             validated_answer = abstain_message
             used_citations = []
-            confidence = 0.0
-            coverage = 0.0
-            is_abstained = True
             
         confidence_time_ms = (time.time() - confidence_start) * 1000
-            
-        # Compile provenance features across the final retrieved context chunks
+        
+        # Resolve SQLite embedding cache metrics if available
+        cache_hits = 0
+        cache_misses = 0
+        cache_lookup_latency = 0.0
+        cache_insert_latency = 0.0
+        invalidation_strategy = "unknown"
+        if emb_model and hasattr(emb_model, "hits"):
+            cache_hits = emb_model.hits
+            cache_misses = emb_model.misses
+            cache_lookup_latency = sum(emb_model.lookup_latencies_ms) if emb_model.lookup_latencies_ms else 0.0
+            cache_insert_latency = sum(emb_model.insert_latencies_ms) if emb_model.insert_latencies_ms else 0.0
+            if hasattr(emb_model, "reset_stats"):
+                emb_model.reset_stats()
+            if hasattr(emb_model, "cache"):
+                invalidation_strategy = getattr(emb_model.cache, "invalidation_strategy", "unknown")
+                
+        # Compile telemetry & provenance
         provenance_flags = {
             "semantic_match": False,
             "graph_neighbor": False,
@@ -324,85 +480,14 @@ class GroundedAnswerGenerator:
                     provenance_flags["paper_match"] = True
                 elif exp_type == "introduced_method":
                     provenance_flags["introduced_method"] = True
-
+                    
         provenance_features = {}
-        
-        # 1. semantic_match
-        sem_active = provenance_flags["semantic_match"]
-        provenance_features["semantic_match"] = {
-            "active": sem_active,
-            "reason": None if sem_active else "no_vector_chunks_selected"
-        }
-        
-        # 2. graph_neighbor
-        graph_active = provenance_flags["graph_neighbor"]
-        provenance_features["graph_neighbor"] = {
-            "active": graph_active,
-            "reason": None if graph_active else "no_graph_connections_to_query_entities"
-        }
-        
-        # 3. entity_link
-        el_active = provenance_flags["entity_link"]
-        el_reason = None
-        if not el_active:
-            if not retrieval_result.retrieval_metadata.get("entity_matches", 0):
-                el_reason = "no_entities_matched_in_query"
-            else:
-                el_reason = "no_selected_chunks_linked_to_semantic_entities"
-        provenance_features["entity_link"] = {
-            "active": el_active,
-            "reason": el_reason
-        }
-        
-        # 4. cross_encoder
-        ce_active = provenance_flags["cross_encoder"]
-        ce_reason = None
-        if not ce_active:
-            if not getattr(self.retriever, "enable_cross_encoder", False):
-                ce_reason = "disabled_in_config"
-            else:
-                ce_reason = "no_vector_candidates"
-        provenance_features["cross_encoder"] = {
-            "active": ce_active,
-            "reason": ce_reason
-        }
-        
-        # 5. packed_context
-        packed_active = provenance_flags["packed_context"]
-        provenance_features["packed_context"] = {
-            "active": packed_active,
-            "reason": None if packed_active else "no_contiguous_chunks_packed"
-        }
-        
-        # 6. neighbor_expansion
-        ne_active = provenance_flags["neighbor_expansion"]
-        ne_reason = None
-        if not ne_active:
-            hops_used = retrieval_result.retrieval_metadata.get("hops", 1)
-            if hops_used < 2:
-                ne_reason = f"hop_limit_{hops_used}"
-            else:
-                ne_reason = "no_2_hop_neighbors_found"
-        provenance_features["neighbor_expansion"] = {
-            "active": ne_active,
-            "reason": ne_reason
-        }
-        
-        # 7. paper_match
-        pm_active = provenance_flags["paper_match"]
-        provenance_features["paper_match"] = {
-            "active": pm_active,
-            "reason": None if pm_active else "no_explicit_paper_in_query"
-        }
-        
-        # 8. introduced_method
-        intro_active = provenance_flags["introduced_method"]
-        provenance_features["introduced_method"] = {
-            "active": intro_active,
-            "reason": None if intro_active else "no_introduced_methods_matched"
-        }
-
-        # 11. Compile telemetry & metadata
+        for feature_name, act_val in provenance_flags.items():
+            provenance_features[feature_name] = {
+                "active": act_val,
+                "reason": None if act_val else f"no_{feature_name}_triggered"
+            }
+            
         provenance = {
             "papers_used": len(retrieval_result.source_papers),
             "chunks_used": len(retrieval_result.vector_context),
@@ -417,9 +502,11 @@ class GroundedAnswerGenerator:
         citation_precision_val = None
         if not is_abstained and self.citation_validator.generated_count > 0:
             citation_precision_val = float(self.citation_validator.citation_precision)
-
+            
         metadata = {
             "category": category,
+            "abstained": is_abstained,
+            "abstention_reason": abstain_reason,
             "provider_attempted": provider_attempted,
             "provider_used": provider_used,
             "fallback_used": fallback_used,
@@ -433,7 +520,16 @@ class GroundedAnswerGenerator:
             "answer_coverage": float(coverage),
             "confidence_breakdown": details.get("confidence_breakdown", {}),
             "retrieval_metrics": details,
-            "total_execution_time_ms": float((time.time() - start_time) * 1000)
+            "total_execution_time_ms": float((time.time() - start_time) * 1000),
+            "retrieval_metadata": retrieval_result.retrieval_metadata,
+            "latencies": {
+                "classifier": float(intent_time / 1000.0),
+                "compressor": float(context_time / 1000.0),
+                "generation": float(generation_time_ms / 1000.0),
+                "validation": float(citation_time_ms / 1000.0),
+                "confidence": float(confidence_time_ms / 1000.0),
+                "total": float((time.time() - start_time))
+            }
         }
         
         evaluation_context = EvaluationContext(
@@ -473,9 +569,17 @@ class GroundedAnswerGenerator:
                     c_words = chunk.chunk_word_count if hasattr(chunk, "chunk_word_count") else chunk.get("chunk_word_count", 0)
                     
                     c_sem = chunk.similarity_score if hasattr(chunk, "similarity_score") else chunk.get("similarity_score", 0.0)
+                    if c_sem is None:
+                        c_sem = 0.0
                     c_rerank = chunk.reranker_score if hasattr(chunk, "reranker_score") else chunk.get("reranker_score", 0.0)
+                    if c_rerank is None:
+                        c_rerank = c_sem
                     c_graph_bonus = chunk.graph_bonus if hasattr(chunk, "graph_bonus") else chunk.get("graph_bonus", 0.0)
+                    if c_graph_bonus is None:
+                        c_graph_bonus = 0.0
                     c_combined = chunk.combined_score if hasattr(chunk, "combined_score") else chunk.get("combined_score", 0.0)
+                    if c_combined is None:
+                        c_combined = c_sem
                     
                     retrieved_chunks_trace.append(ChunkSummary(
                         chunk_id=c_id,
@@ -511,11 +615,27 @@ class GroundedAnswerGenerator:
                 
                 overlaps = []
                 for chunk in retrieval_result.vector_context:
-                    reason = getattr(chunk, "retrieval_reason", None) or chunk.get("retrieval_reason")
+                    reason = None
+                    if isinstance(chunk, dict):
+                        reason = chunk.get("retrieval_reason")
+                    else:
+                        reason = getattr(chunk, "retrieval_reason", None)
+                        
                     if reason:
-                        ranking = getattr(reason, "ranking", None) or reason.get("ranking")
+                        ranking = None
+                        if isinstance(reason, dict):
+                            ranking = reason.get("ranking")
+                        else:
+                            ranking = getattr(reason, "ranking", None)
+                            
                         if ranking:
-                            overlap = getattr(ranking, "graph_overlap", None) or ranking.get("graph_overlap", 0.0)
+                            overlap = 0.0
+                            if isinstance(ranking, dict):
+                                overlap = ranking.get("graph_overlap", 0.0)
+                            else:
+                                overlap = getattr(ranking, "graph_overlap", 0.0)
+                            if overlap is None:
+                                overlap = 0.0
                             overlaps.append(overlap)
                 graph_overlap_ratio = sum(overlaps) / len(overlaps) if overlaps else 0.0
 
@@ -536,7 +656,7 @@ class GroundedAnswerGenerator:
                     graph_overlap_ratio=graph_overlap_ratio,
                     semantic_weight=semantic_weight,
                     graph_weight=graph_weight,
-                    execution_time_ms=float(retrieval_result.retrieval_metadata.get("fusion_time_ms", retrieval_time_ms))
+                    execution_time_ms=float(retrieval_result.retrieval_metadata.get("fusion_time_ms") if retrieval_result.retrieval_metadata.get("fusion_time_ms") is not None else retrieval_time_ms)
                 )
                 trace_ctx.policy = policy_trace
 
@@ -644,9 +764,49 @@ class GroundedAnswerGenerator:
                     standalone_tracer.log_trace(trace_ctx)
 
             except Exception as te:
+                import traceback
                 logger.error(f"Error compiling trace telemetry: {te}")
+                traceback.print_exc()
 
-        return GenerationResult(
+        # Production telemetry JSONL logging
+        try:
+            log_dir = "logs"
+            if not os.path.exists(log_dir):
+                os.makedirs(log_dir, exist_ok=True)
+            log_file = os.path.join(log_dir, "production_telemetry.jsonl")
+            
+            from src.observability.cost_estimator import CostEstimatorFactory
+            estimator = CostEstimatorFactory.get_estimator(provider_used)
+            p_tok = prompt_tokens_act if prompt_tokens_act is not None else int(len(prompt.split()) * 1.3)
+            c_tok = completion_tokens_act if completion_tokens_act is not None else int(len(answer.split()) * 1.3)
+            cost = estimator.estimate_cost(generation_model, p_tok, c_tok)
+            
+            import json
+            log_entry = {
+                "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                "query": query,
+                "latency_ms": float((time.time() - start_time) * 1000),
+                "provider": provider_used,
+                "model": generation_model,
+                "confidence": float(confidence),
+                "abstained": is_abstained,
+                "abstention_reason": abstain_reason,
+                "retrieved_papers": [p.get("arxiv_id") for p in retrieval_result.source_papers],
+                "chunks_count": len(retrieval_result.vector_context),
+                "citations_count": len(used_citations),
+                "cost": float(cost),
+                "tokens": {
+                    "prompt": p_tok,
+                    "completion": c_tok,
+                    "total": p_tok + c_tok
+                }
+            }
+            with open(log_file, "a", encoding="utf-8") as lf:
+                lf.write(json.dumps(log_entry) + "\n")
+        except Exception as le:
+            logger.error(f"Failed to log production telemetry: {le}")
+
+        result = GenerationResult(
             query=query,
             answer=validated_answer,
             citations=used_citations,
@@ -655,6 +815,9 @@ class GroundedAnswerGenerator:
             metadata=metadata,
             evaluation_context=evaluation_context
         )
+        # Write to answer cache
+        self._answer_cache[cache_key] = (time.time(), result)
+        return result
 
 
     def _load_prompt_template(self, category: str) -> str:
